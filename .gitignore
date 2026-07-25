@@ -1,0 +1,17 @@
+# SQLite database
+*.db
+
+# Node.js dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# VS Code settings
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
