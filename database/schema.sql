@@ -12,28 +12,37 @@ CREATE TABLE subjects (
 
 CREATE TABLE chapters (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+
     subject_id INTEGER NOT NULL,
-    name TEXT NOT NULL,
+
+    chapter_number INTEGER NOT NULL,
+
+    chapter_name TEXT NOT NULL,
 
     FOREIGN KEY (subject_id)
-        REFERENCES subjects(id)
+        REFERENCES subjects(id),
+
+    UNIQUE(subject_id, chapter_number)
 );
 
 CREATE TABLE questions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+
     chapter_id INTEGER NOT NULL,
+
+    question_number INTEGER NOT NULL,
+
     question_text TEXT NOT NULL,
 
     question_type TEXT NOT NULL
         CHECK (question_type IN ('MCQ', 'TRUE_FALSE', 'BLANK')),
 
-    difficulty TEXT
-        CHECK (difficulty IN ('Basic', 'Standard', 'Advanced')),
-
-    explanation TEXT,
+    is_active INTEGER NOT NULL DEFAULT 1,
 
     FOREIGN KEY (chapter_id)
-        REFERENCES chapters(id)
+        REFERENCES chapters(id),
+
+    UNIQUE (chapter_id, question_number)
 );
 
 
@@ -54,9 +63,29 @@ CREATE TABLE question_options (
     question_id INTEGER NOT NULL,
 
     option_label TEXT NOT NULL,
+       
 
     option_text TEXT NOT NULL,
 
     FOREIGN KEY (question_id)
         REFERENCES questions(id)
+);
+
+CREATE TABLE quiz_attempts (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    chapter_id INTEGER NOT NULL UNIQUE,
+
+    score INTEGER NOT NULL,
+
+    total_questions INTEGER NOT NULL,
+
+    percentage REAL NOT NULL,
+
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (chapter_id)
+        REFERENCES chapters(id)
+
 );

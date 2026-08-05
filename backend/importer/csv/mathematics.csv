@@ -1,0 +1,41 @@
+Subject,Chapter ,No,Type,Question ,Option A,Option B,Option C,Option D,Correct Answer
+Mathematics,1,1,MCQ,What is the value $i^{10} + i^{15}$?,$-i$,$-1 + i$,$-1 - i$,$1 + i$,B
+Mathematics,1,2,MCQ,The value of $(-i)^{\frac{1}{2}}$ is,$(-1)^{\frac{3}{4}}$,$i$,$(1)^{\frac{3}{4}}$,$(-1)^{\frac{3}{2}}$,A
+Mathematics,1,3,MCQ,The purely imaginary complex number is,$-3$,$2i$,$-3 + 2i$, $-2 - 2i$,B
+Mathematics,1,4,MCQ,"If $n$ is a positive integer, $i^n + i^{n+1} + i^{n+2} + i^{n+3} =$",$0$,$1$,$-1$,None of these,A
+Mathematics,1,5,MCQ,$i^{17} + \frac{1}{i^{23}} =$,$2 + i$,$2i$,$-2i$,$3i$,B
+Mathematics,1,6,MCQ,The real part of $\frac{5+i}{1-i}$ is,$2$,$3i$,&-2$,$2+3i$,D
+Mathematics,1,7,MCQ,In $(-10 + 3i)(1 + 2i)$ the imaginary part is,$-16$,$-17$,$-17i$,$-16 - 17i$,D
+Mathematics,1,8,MCQ,"If $n$ is even number, $i^2 + i^4 + i^6 + ... + i^{2n} =$",$0$,$1$,$-1$,None of these,A
+Mathematics,1,9,MCQ,$i^{802}$ is equal to,$i$,$-i$,$-1$,$1$,C
+Mathematics,1,10,MCQ,The value of $i^{-849}$ is,$i$,$-i$,$1$,$0$,B
+Mathematics,3,1,MCQ,The coordinates of the points on the $zx$-plane are of the form,"$(x, y, 0)$","$(0, y, z)$","$(x, 0, z)$","$(0, y, 0)$",C
+Mathematics,3,2,MCQ,A plane with an equation of the form $z = \text{constant}$ is parallel to,$xy$-plane,$yz$-plane,$zx$-plane,None of these,A
+Mathematics,3,3,MCQ,The coordinates of the points on the plane parallel to $yz$-plane are of the form,"$(x, y, c)$","$(a, y, z)$"," $(x, b, z)$","$(x, y, z)$",B
+Mathematics,3,4,MCQ,"The equation of any line perpendicular to $xy$-plane and passing through the point $(a, b, c)$ is","$x = a, y = b$","$y = b, z = c$","$x = a, z = c$",None of these,A
+Mathematics,3,5,MCQ,"The line is perpendicular to $xy$-plane, then the point of intersection is","$(x, y, 0)$","$(x, 0, z)$","$(0, y, z)$",None of these,A
+Mathematics,3,6,MCQ,"The distance between the points $P(3, 4, 1)$ and $Q(1, -2, 5)$:",$6$,$2\sqrt{14}$,$26$,$\sqrt{42}$,B
+Mathematics,3,7,MCQ,Which of the following lines is perpendicular to the $zx$-plane?,"$x = 2, z = 3$",$y = 3$,$z = 0$,$x + y + z = 4$,A
+Mathematics,3,8,MCQ,"The coordinates of the point on the line perpendicular to $xy$-plane and passing through $(a, b, c)$ is","$(a, b, z)$","$(x, b, c)$","$(a, y, c)$",None of these ,A
+Mathematics,3,9,MCQ,The equation of any planes parallel to $xy$-plane is,$x = a$,$y = b$,$z = c$,"$x = a, y = b$",C
+Mathematics,3,10,MCQ,The coordinates of the points on the plane of $y = 2$ are,"$(x, y, 2)$","$(x, 2, z)$","$(x, y, 2)$","$(2, y, 2)$",B
+Mathematics,4,1,MCQ,"The position vector of a point $P(2, 3, -1)$ in space is",$\overline{OP} = 2\hat{i} + 3\hat{j} - \hat{k}$,$\overline{OP} = \hat{i} + 3\hat{k}$,$\overline{OP} = 2\hat{i} + 3\hat{j} + \hat{k}$,$\overline{OP} = \hat{i} + 2\hat{j} + 3\hat{k}$,A
+Mathematics,4,2,MCQ,"Given two points $A(1, -2, 5)$ and $B(3, 1, -2)$, the position vector of $\overline{AB}$ is",$2\hat{i} + 3\hat{j} - 7\hat{k}$,$3\hat{i} + 3\hat{j} - 7\hat{k}$,$-2\hat{i} - 3\hat{j} + 7\hat{k}$,$2\hat{i} + 3\hat{j} + 7\hat{k}$,A
+Mathematics,4,3,MCQ,"If point $A(1, -2, 3)$, then $\overline{OA} =$",$\hat{i} - 2\hat{j} + 3\hat{k}$,$\hat{i} + 2\hat{j} + 3\hat{k}$,$-\hat{i} + 2\hat{j} - 3\hat{k}$,$\hat{i} - 2\hat{j} - 3\hat{k}$,A
+Mathematics,4,4,MCQ,"The magnitude of vector $(6, -8, -10)$ is",$6$,$8$,$10$,$10\sqrt{2}$,D
+Mathematics,4,5,MCQ,"If $A$ is $(2, 1, 3)$ and $B$ is $(5, -1, 7)$, then $\vert{}\overline{AB}\vert{} =$",$29$,$\sqrt{29}$,$6$,$7$,B
+Mathematics,4,6,MCQ,"If $A$ is $(2, 1, 3)$ and $B$ is $(5, -1, c)$, and $\vert{}\overline{AB}\vert{} = \sqrt{29}$, then the value(s) of $c$ is(are)",$7$,$-1$,$-3\text{ or } 5$,$3\text{ or } -5$,C
+Mathematics,4,7,MCQ,"Given $\vec{a} = 3\hat{i} + 2\hat{j} - 4\hat{k}$, then $\vert{}\vec{a}\vert{} =$",$29$,$\sqrt{29}$,$27$,$\sqrt{27}$,B
+Mathematics,4,8,MCQ,"Given $A(8, 2, 2)$, $C(20, 5, 5)$ and $B(12, b, 3)$ are collinear, then $b =$",$2$,$3$,$4$,$5$,B
+Mathematics,4,9,MCQ,"The position vector of a point $Q(-4, 0, 5)$ in space is",$\overline{OQ} = -4\hat{i} + 5\hat{k}$,$\overline{OQ} = -4\hat{i} + 5\hat{j}$,$\overline{OQ} = 4\hat{i} - 5\hat{k}$,$\overline{OQ} = -4\hat{i} + \hat{j} + 5\hat{k}$,A
+Mathematics,4,10,MCQ,"The magnitude of the vector $\vec{v} = (3, -6, 2)$ is",$7$,$\sqrt{11}$, $49$,$\sqrt{41}$,A
+Mathematics,5,1,MCQ,Two tasks A and B can be done in $m$ and $n$ ways respectively. Then the number of ways to complete the task A and B in succession is,$mn$,$m+n$,$m-n$,$\frac{m}{n}$,A
+Mathematics,5,2,MCQ,There are 4 roads between town A and town B and 3 roads between town B and town C. The number of ways to drive from A to C by passing through B is,7,12,14,16,B
+Mathematics,5,3,MCQ,"A boy has 4 shirts, 3 pants and 3 caps. The number of ways he can wear them is",10,14,16,36,D
+Mathematics,5,4,MCQ,A school has 4 different MATH teachers and 5 different SCIENCE teachers. How many ways can a student select one math teacher and one science teacher?,9,20,10,25,B
+Mathematics,5,5,MCQ,"The number of three-digit numbers that can be formed by 1, 2, 3, 4, when repetition is allowed, is",20,24,60,64,D
+Mathematics,5,6,MCQ,"How many 3-digit numbers can be formed without using the digits 0, 2, 3, 4, 5 and 6?",120,74,64,None of these ,C
+Mathematics,5,7,MCQ,"How many four-digit numbers can be formed from 0, 1, 2, 3, 4, 5 if repetition is not allowed?",150,245,300,400,C
+Mathematics,5,8,MCQ,Two tasks A and B can be done in $m$ and $n$ ways respectively. Then the number of ways to complete either of the two tasks is,$mn$,$m+n$,$m-n$,$\frac{m}{n}$,B
+Mathematics,5,9,MCQ,Two disjoint tasks can be completed independently in 5 and 6 ways respectively. The number of ways either of the two jobs can be completed is,11 ways,5 ways,6 ways,30 ways,A
+Mathematics,5,10,MCQ,"The total number of numbers that can be formed by using the digits 3, 5 and 7 only, when repetition is allowed, is",27,39,15,105,B

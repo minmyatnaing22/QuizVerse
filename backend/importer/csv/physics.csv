@@ -1,0 +1,76 @@
+Subject,Chapter,No,Type,Question,Option A,Option B,Option C,Option D,Correct Answer
+Physics,1,1,TRUE_FALSE,"In a circular motion, the object moves in a circle.",TRUE,FALSE,,,A
+Physics,1,2,TRUE_FALSE,The motion of a Ferris wheel is a circular motion.,TRUE,FALSE,,,B
+Physics,1,3,TRUE_FALSE,A rigid body is a body that does not deform or change shape.,TRUE,FALSE,,,A
+Physics,1,4,TRUE_FALSE,Angular velocity is the rate of rotation with respect to the angular speed.,TRUE,FALSE,,,B
+Physics,1,5,TRUE_FALSE,Angular velocity is the rate of change of angular displacement with respect to time.,TRUE,FALSE,,,A
+Physics,1,6,BLANK,"In a ______ motion, the object moves in a circle.",,,,,circular
+Physics,1,7,BLANK,The motion of a Ferris wheel is a ______ motion.,,,,,circular
+Physics,1,8,BLANK,A _______ is a body that does not deform or change shape.,,,,,rigid body
+Physics,1,9,BLANK,The _______ of the earth about its axis creates days and nights.,,,,,rotation
+Physics,1,10,BLANK,Angular velocity is the rate of change of _______ with respect to time.,,,,,angular displacement
+Physics,1,11,MCQ,"In a ______ motion, the object moves in a circle.",circular,rotational,linear,,A
+Physics,1,12,MCQ,The motion of a Ferris wheel is a ______ motion.,circular,rotational,linear,,A
+Physics,1,13,MCQ,A ______ body is a body that does not deform or change shape.,rigid ,elastic,plastic,,A
+Physics,1,14,MCQ,The rotation of the earth about its own axis is a _______ motion.,circular,rotational,linear,,B
+Physics,1,15,MCQ,Angular velocity is the rate of change of _______ with respect to time.,angular speed,angular acceleration,angular displacement,,C
+Physics,2,1,TRUE_FALSE,"For uniform circular motion, tangential speed is constant.",TRUE,FALSE,,,A
+Physics,2,2,TRUE_FALSE,"For uniform circular motion, tangential velocity is constant.",TRUE,FALSE,,,B
+Physics,2,3,TRUE_FALSE,There are different forms of forces which can provide centripetal force.,TRUE,FALSE,,,A
+Physics,2,4,TRUE_FALSE,The centrifugal force is needed for an object to move in a circle.,TRUE,FALSE,,,B
+Physics,2,5,TRUE_FALSE,"Without the centripetal force, the object would not move in a circular path.",TRUE,FALSE,,,A
+Physics,2,6,BLANK,An object that is accelerating must have a _______ acting on it.,,,,,net force
+Physics,2,7,BLANK,An object moving in a circle must have a ______ applied to it to keep it moving in the circle.,,,,,force
+Physics,2,8,BLANK,The force that enables an object to keep it moving in the circle is the _______ force.,,,,,centripetal
+Physics,2,9,BLANK,"When we swing a ball on the end of a string in a circle, the _______ in the string provides the required centripetal force.",,,,,tension
+Physics,2,10,BLANK,The centripetal force is _______ to the direction of the motion of the body in circular motion.,,,,,normal
+Physics,2,11,MCQ,The centripetal force required is _______ the mass of the rotating body.,directly proportional to,inversely proportional to,independent of,,A
+Physics,2,12,MCQ," For a larger mass of the car, the banking angle _______. ",must be larger,must be smaller,does not depend on mass,,C
+Physics,2,13,MCQ,An object that is accelerating must have a _______ acting on it.,force,mass,tension,,A
+Physics,2,14,MCQ,The force that enables an object to keep it moving in the circle is the _______ force.,centrifugal ,centripetal ,linear,,B
+Physics,2,15,MCQ,The centripetal force is _______ to the direction of the motion of the body in circular motion.,equal,parallel ,normal,,C
+Physics,3,1,TRUE_FALSE,Fluid dynamics concerns the fluid in motion.,TRUE,FALSE,,,A
+Physics,3,2,TRUE_FALSE,The study of liquid at rest is called hydrodynamics.,TRUE,FALSE,,,B
+Physics,3,3,TRUE_FALSE,Fluid is either a liquid or a gas.,TRUE,FALSE,,,A
+Physics,3,4,TRUE_FALSE,The volume of a liquid varies with pressure at a constant temperature.,TRUE,FALSE,,,B
+Physics,3,5,TRUE_FALSE,The density of the liquid is constant for any pressure at a constant temperature.,TRUE,FALSE,,,A
+Physics,3,6,BLANK,Fluid is a substance that offers no permanent _______ to deforming forces.,,,,,resistance
+Physics,3,7,BLANK,"The study of fluids has two parts, the statics and the _______.",,,,,dynamics
+Physics,3,8,BLANK,The fluid _______ concentrates on the fluids at rest.,,,,,statics
+Physics,3,9,BLANK,The study of liquid at rest is called _______.,,,,,hydrostatics
+Physics,3,10,BLANK,The internal friction in the fluids is called _______.,,,,,viscosity
+Physics,3,11,MCQ,The study of liquid at rest is called _______.,hydrodynamics,hydrostatics,oceanography,,B
+Physics,3,12,MCQ, The study of liquid in motion is called _______. ,hydrodynamics,hydrostatics,oceanography,,A
+Physics,3,13,MCQ,_______ are compressible.,Gases,Both liquids and gases,Liquids,,A
+Physics,3,14,MCQ, _______ law gives the relation between the volume and pressure of a gas.,Boyles',Charles',Avogadro's,,A
+Physics,3,15,MCQ,_______ law gives the relation between the volume and temperature of a gas.,Boyles',Charles',Avogadro's,,B
+Physics,4,1,TRUE_FALSE,Energy resources are all forms of fuel used in the modern world.,TRUE,FALSE,,,A
+Physics,4,2,TRUE_FALSE,Renewable energy sources are also known as conventional energy sources.,TRUE,FALSE,,,B
+Physics,4,3,TRUE_FALSE,Renewable energy sources do not pollute the environment and natural surroundings,TRUE,FALSE,,,A
+Physics,4,4,TRUE_FALSE,Renewable energy sources require more expenditure.,TRUE,FALSE,,,B
+Physics,4,5,TRUE_FALSE,Energy is a basic necessity for life.,TRUE,FALSE,,,A
+Physics,4,6,BLANK,_______ energy sources do not pollute the environment.,,,,,Renewable
+Physics,4,7,BLANK,_______ energy sources require less expenditure.,,,,,Renewable
+Physics,4,8,BLANK,Energy demand is the term used to describe the _______ of energy.,,,,,consumption
+Physics,4,9,BLANK,_____ per cent of the world's oil reserves have already been discovered.,,,,,Ninety
+Physics,4,10,BLANK,All the sources of energy can be divided into _______ categories.,,,,,two
+Physics,4,11,MCQ,The one which is not a renewable energy is _______.,geothermal power,biomass power,nuclear power,,C
+Physics,4,12,MCQ,The _______ is the main source of energy.,sun,fossil fuel,biomass,,A
+Physics,4,13,MCQ,The _______ is not a fossil fuel.,uranium,coal,natural gas,,A
+Physics,4,14,MCQ,_______ is the main constituent of these fossil fuels.,Hydrogen,Oxygen,Carbon,,C
+Physics,4,15,MCQ,A large amount of _______ energy is stored in the fossil fuels.,nuclear,chemical,electrical,,B
+Physics,5,1,TRUE_FALSE,There can be net heat transfer between the two systems at different temperatures.,TRUE,FALSE,,,A
+Physics,5,2,TRUE_FALSE,There can be net heat transfer between the two systems at the same temperature.,TRUE,FALSE,,,B
+Physics,5,3,TRUE_FALSE,Metals have many free electrons.,TRUE,FALSE,,,A
+Physics,5,4,TRUE_FALSE,"In fluids, heat is mainly transferred by conduction.",TRUE,FALSE,,,B
+Physics,5,5,TRUE_FALSE,Metals are generally very good conductors of heat.,TRUE,FALSE,,,A
+Physics,5,6,BLANK,Heat is a form of _______.,,,,,energy
+Physics,5,7,BLANK,The individual parts of a medium do not move as a whole in heat _______.,,,,,conduction
+Physics,5,8,BLANK,Heat can be transferred from one system to another due to a _______ difference.,,,,,temperature
+Physics,5,9,BLANK,Heat transfer and thermodynamics are two _______ branches of science.,,,,,complementary
+Physics,5,10,BLANK,Heat transfer is a discipline of _______ engineering.,,,,,thermal
+Physics,5,11,MCQ,The individual parts of a medium do not move as a whole in heat _______.,conduction,convection,radiation,,A
+Physics,5,12,MCQ,"In heat _______, heat is transferred by successive distribution among the adjacent parts.",conduction,convection,radiation,,A
+Physics,5,13,MCQ, Heat _______ is the flow of heat through a fluid by the movement of the fluid itself. ,conduction,convection,radiation,,B
+Physics,5,14,MCQ,Some of the weather conditions are mostly created by heat _______.,conduction,convection,radiation,,B
+Physics,5,15,MCQ,Heat _______ is a transfer of heat that does not require a material medium.,conduction,convection,radiation,,C

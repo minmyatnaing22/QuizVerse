@@ -15,3 +15,15 @@ node_modules/
 
 # Windows
 Thumbs.db
+
+# Personal notes
+NOTE.txt
+
+# SQLite Browser project
+*.sqbpro
+
+# node_modules
+backend/node_modules/
+
+# Database (optional)
+# database/quizVerse.db
