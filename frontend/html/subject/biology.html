@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuizVerse | Biology Chapters</title>
+    <link rel="stylesheet" href="../../css/subjectstyle/biology_style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="sidebar-backdrop"></div>
+      <aside class="sidebar">
+        <div class="brand"><span class="dot"></span> QuizVerse <span class="brand-sub">· Grade 12</span></div>
+        <div class="profile-card">
+          <div class="avatar-ring"><div class="avatar-fallback">TZ</div></div>
+          <div class="student-name">Thiri Zaw</div>
+          <div class="student-meta">Biology Practice</div>
+          <button class="continue-btn">▶ Continue Practice</button>
+        </div>
+
+        <nav class="nav-list">
+          <a class="nav-item" href="myanmar.html">
+            <span class="subject-name">Myanmar</span>
+            <span class="progress-meta">
+              <span class="progress-track"><span class="progress-fill" style="width: 56%"></span></span>
+              <span class="progress-value">56%</span>
+            </span>
+          </a>
+          <a class="nav-item" href="english.html">
+            <span class="subject-name">English</span>
+            <span class="progress-meta">
+              <span class="progress-track"><span class="progress-fill" style="width: 38%"></span></span>
+              <span class="progress-value">38%</span>
+            </span>
+          </a>
+          <a class="nav-item" href="mathematics.html">
+            <span class="subject-name">Mathematics</span>
+            <span class="progress-meta">
+              <span class="progress-track"><span class="progress-fill" style="width: 70%"></span></span>
+              <span class="progress-value">70%</span>
+            </span>
+          </a>
+          <a class="nav-item" href="physics.html">
+            <span class="subject-name">Physics</span>
+            <span class="progress-meta">
+              <span class="progress-track"><span class="progress-fill" style="width: 25%"></span></span>
+              <span class="progress-value">25%</span>
+            </span>
+          </a>
+          <a class="nav-item" href="chemistry.html">
+            <span class="subject-name">Chemistry</span>
+            <span class="progress-meta">
+              <span class="progress-track"><span class="progress-fill" style="width: 44%"></span></span>
+              <span class="progress-value">44%</span>
+            </span>
+          </a>
+          <a class="nav-item active" href="biology.html">
+            <span class="subject-name">Biology</span>
+            <span class="progress-meta">
+              <span class="progress-track"><span class="progress-fill" style="width: 61%"></span></span>
+              <span class="progress-value">61%</span>
+            </span>
+          </a>
+        </nav>
+      </aside>
+
+      <main>
+        <div class="mobile-header">
+          <div class="mobile-brand"><span class="dot"></span> QuizVerse</div>
+          <button class="sidebar-toggle" aria-label="Open menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 6h16"/>
+              <path d="M4 12h16"/>
+              <path d="M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+        <div class="top-row">
+          <div class="heading-block">
+            <h1>Biology Chapters</h1>
+            <p>Practice six chapter-based sets for life science topics.</p>
+          </div>
+          <a class="back-link" href="../index.html">← Back to Home</a>
+        </div>
+
+        <div class="category-tabs">
+          <input type="radio" name="biology-category" id="bio-true" checked>
+          <input type="radio" name="biology-category" id="bio-mcq">
+          <input type="radio" name="biology-category" id="bio-blank">
+
+          <div class="tab-bar">
+            <label class="tab-btn" for="bio-true">TRUE/FALSE</label>
+            <label class="tab-btn" for="bio-mcq">MCQ</label>
+            <label class="tab-btn" for="bio-blank">BLANK</label>
+          </div>
+
+          <div class="category-panels">
+            <section class="category-panel" id="bio-panel-true">
+              <div class="panel-intro">
+                <h2>TRUE/FALSE Challenge</h2>
+                <p>Decide whether each biology statement is true or false.</p>
+              </div>
+              <div class="chapter-grid">
+                <article class="chapter-card"><h3>Chapter 1: Cell Biology</h3><p>True or false: cells are the basic unit of life.</p><a class="start-btn" href="#">Start T/F</a></article>
+                <article class="chapter-card"><h3>Chapter 2: Genetics</h3><p>True or false: DNA carries the genetic instructions for an organism.</p><a class="start-btn" href="#">Start T/F</a></article>
+                <article class="chapter-card"><h3>Chapter 3: Ecology</h3><p>True or false: producers make their own food using sunlight.</p><a class="start-btn" href="#">Start T/F</a></article>
+                <article class="chapter-card"><h3>Chapter 4: Human Body</h3><p>True or false: the heart pumps blood around the body.</p><a class="start-btn" href="#">Start T/F</a></article>
+                <article class="chapter-card"><h3>Chapter 5: Plant Biology</h3><p>True or false: photosynthesis occurs mainly in roots.</p><a class="start-btn" href="#">Start T/F</a></article>
+                <article class="chapter-card"><h3>Chapter 6: Evolution</h3><p>True or false: evolution is driven by natural selection.</p><a class="start-btn" href="#">Start T/F</a></article>
+              </div>
+            </section>
+            <section class="category-panel" id="bio-panel-mcq">
+              <div class="panel-intro">
+                <h2>MCQ Challenge</h2>
+                <p>Choose the best answer for each life-science question.</p>
+              </div>
+              <div class="chapter-grid">
+                <article class="chapter-card"><h3>Chapter 1: Cell Biology</h3><p>Select the correct function of common cell organelles.</p><a class="start-btn" href="#">Start MCQ</a></article>
+                <article class="chapter-card"><h3>Chapter 2: Genetics</h3><p>Practice inheritance and DNA questions with multiple options.</p><a class="start-btn" href="#">Start MCQ</a></article>
+                <article class="chapter-card"><h3>Chapter 3: Ecology</h3><p>Answer ecosystem and food-chain questions with the best choice.</p><a class="start-btn" href="#">Start MCQ</a></article>
+                <article class="chapter-card"><h3>Chapter 4: Human Body</h3><p>Choose the correct organ-system answer for each prompt.</p><a class="start-btn" href="#">Start MCQ</a></article>
+                <article class="chapter-card"><h3>Chapter 5: Plant Biology</h3><p>Practice plant transport and photosynthesis questions.</p><a class="start-btn" href="#">Start MCQ</a></article>
+                <article class="chapter-card"><h3>Chapter 6: Evolution</h3><p>Review adaptation and selection questions through multiple choice.</p><a class="start-btn" href="#">Start MCQ</a></article>
+              </div>
+            </section>
+            <section class="category-panel" id="bio-panel-blank">
+              <div class="panel-intro">
+                <h2>BLANK Challenge</h2>
+                <p>Fill in the missing biology terms and ideas.</p>
+              </div>
+              <div class="chapter-grid">
+                <article class="chapter-card"><h3>Chapter 1: Cell Biology</h3><p>Complete the missing words about cell structure and function.</p><a class="start-btn" href="#">Start Blank</a></article>
+                <article class="chapter-card"><h3>Chapter 2: Genetics</h3><p>Fill in the missing terms for genetic inheritance prompts.</p><a class="start-btn" href="#">Start Blank</a></article>
+                <article class="chapter-card"><h3>Chapter 3: Ecology</h3><p>Complete the blanks in ecosystem and food chain questions.</p><a class="start-btn" href="#">Start Blank</a></article>
+                <article class="chapter-card"><h3>Chapter 4: Human Body</h3><p>Fill in the missing organ and system terms.</p><a class="start-btn" href="#">Start Blank</a></article>
+                <article class="chapter-card"><h3>Chapter 5: Plant Biology</h3><p>Complete the blank plant biology vocabulary prompts.</p><a class="start-btn" href="#">Start Blank</a></article>
+                <article class="chapter-card"><h3>Chapter 6: Evolution</h3><p>Fill in the missing ideas about adaptation and selection.</p><a class="start-btn" href="#">Start Blank</a></article>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+<script>
+  const sidebarToggle = document.querySelector('.sidebar-toggle');
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.querySelector('.sidebar-backdrop');
+
+  function setSidebarOpen(isOpen) {
+    sidebar.classList.toggle('open', isOpen);
+    backdrop.classList.toggle('open', isOpen);
+    document.body.classList.toggle('sidebar-open', isOpen);
+    sidebarToggle?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  function toggleSidebar() {
+    setSidebarOpen(!sidebar.classList.contains('open'));
+  }
+
+  sidebarToggle?.addEventListener('click', toggleSidebar);
+  backdrop?.addEventListener('click', () => setSidebarOpen(false));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && sidebar.classList.contains('open')) {
+      setSidebarOpen(false);
+    }
+  });
+</script>
+  </body>
+</html>
