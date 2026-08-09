@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizVerse — Grade 12 Matriculation Practice</title>
+    <link rel="stylesheet" href="../css/index_style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app">
+  <div class="sidebar-backdrop"></div>
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="brand"><span class="dot"></span> QuizVerse <span style="opacity:.55;font-weight:500;font-size:13px;">· Grade 12</span></div>
+
+    <div class="profile-card">
+      <div class="avatar-ring">
+        <svg width="88" height="88" viewBox="0 0 88 88">
+          <circle cx="44" cy="44" r="40" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="6"/>
+          <circle cx="44" cy="44" r="40" fill="none" stroke="#FFC93C" stroke-width="6" stroke-linecap="round"
+            stroke-dasharray="251.2" stroke-dashoffset="90.4"/>
+        </svg>
+        <div class="avatar-fallback">TZ</div>
+        <div class="level-badge">12</div>
+      </div>
+      <div class="student-name">Thiri Zaw</div>
+      <div class="student-meta">Grade 12</div>
+
+      <div class="xp-wrap">
+        <div class="xp-labels"><span>XP · Level 12</span><span>3,180 / 5,000</span></div>
+        <div class="xp-track"><div class="xp-fill"></div></div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-chip"><div class="val">💥 3,180/5000</div><div class="lbl">EXP</div></div>
+        <div class="stat-chip"><div class="val">🏆 #14</div><div class="lbl">Rank</div></div>
+        <div class="stat-chip"><div class="val">🔥 18</div><div class="lbl">Day streak</div></div>
+        <div class="stat-chip"><div class="val">🎯 82%</div><div class="lbl">Accuracy</div></div>
+      </div>
+      <div class="stat-chip" style="grid-column:1/-1; margin-top:8px; display:flex; justify-content:space-between;">
+        <span class="lbl" style="margin:0;">Questions answered</span><span class="val" style="font-size:13px;">2,430</span>
+      </div>
+      <button class="continue-btn">▶ Continue Practice</button>
+    </div>
+
+    <div class="countdown">
+      <div class="num">128</div>
+      <div class="txt">days left to the<br><b style="color:#fff;">Matriculation Exam</b></div>
+    </div>
+
+    <nav class="nav-list">
+      <a class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>Home</span></a>
+      <a class="nav-item" href="leaderboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 5H4a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4"/><path d="M17 5h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4"/></svg><span>Leaderboard</span></a>
+      <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l4 2"/></svg><span>Practice History</span></a>
+      <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></a>
+      <a class="nav-item logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span>Logout</span></a>
+    </nav>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <main>
+    <div class="mobile-header">
+      <div class="mobile-brand"><span class="dot"></span> QuizVerse</div>
+      <button class="sidebar-toggle" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16"/>
+          <path d="M4 12h16"/>
+          <path d="M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="top-row">
+      <div class="heading-block">
+        <h1>Choose Your Subject</h1>
+        <p>128 days to go — keep your streak alive and close the gap on your weakest subject.</p>
+      </div>
+    </div>
+
+    <div class="quick-stats">
+      <div class="qstat"><div class="ic" style="background:#FFF4D6;">📅</div><div><div class="num">128 days</div><div class="lbl">Until exam</div></div></div>
+      <div class="qstat"><div class="ic" style="background:#E7EDFF;">📊</div><div><div class="num">312 / 480</div><div class="lbl">Total questions done</div></div></div>
+      <div class="qstat"><div class="ic" style="background:#E8FBEF;">✅</div><div><div class="num">82%</div><div class="lbl">Overall accuracy</div></div></div>
+    </div>
+
+    <div class="subject-grid">
+
+      <!-- Myanmar -->
+      <div class="subject-card" style="--accent:#2B5FE2; --accent-soft:#E7EDFF;">
+        <div class="card-top">
+          <div class="subj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V6a2 2 0 0 1 2-2h9l5 5v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 4v5h5"/><path d="M8 13h8M8 17h5"/></svg></div>
+          <div class="completion-pill">56% done</div>
+        </div>
+        <div class="card-title">Myanmar</div>
+        <div class="card-sub">မြန်မာစာ — စကားသံသဘောတရား၊အဖတ်အရွတ်၊အရေးအသား</div>
+        <div class="prog-track"><div class="prog-fill" style="width:56%;"></div></div>
+        <div class="card-bottom">
+          <div class="qcount"><b>45</b>/80 questions</div>
+          <a class="practice-btn" href="subject/myanmar.html">Practice Now →</a>
+        </div>
+      </div>
+
+      <!-- English -->
+      <div class="subject-card" style="--accent:#F2A400; --accent-soft:#FFF4D6;">
+        <div class="card-top">
+          <div class="subj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 7h7M9 11h7"/></svg></div>
+          <div class="completion-pill">38% done</div>
+        </div>
+        <div class="card-title">English</div>
+        <div class="card-sub">Grammar, comprehension & essay writing</div>
+        <div class="prog-track"><div class="prog-fill" style="width:38%;"></div></div>
+        <div class="card-bottom">
+          <div class="qcount"><b>30</b>/80 questions</div>
+          <a class="practice-btn" href="subject/english.html">Practice Now →</a>
+        </div>
+      </div>
+
+      <!-- Mathematics -->
+      <div class="subject-card" style="--accent:#7C3AED; --accent-soft:#F0E9FF;">
+        <div class="card-top">
+          <div class="subj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><path d="M13 6h8M13 10h5"/><path d="M13 16h8M13 20h5"/><circle cx="8" cy="18" r="3"/></svg></div>
+          <div class="completion-pill">70% done</div>
+        </div>
+        <div class="card-title">Mathematics</div>
+        <div class="card-sub">Algebra, geometry, calculus & statistics</div>
+        <div class="prog-track"><div class="prog-fill" style="width:70%;"></div></div>
+        <div class="card-bottom">
+          <div class="qcount"><b>56</b>/80 questions</div>
+          <a class="practice-btn" href="subject/mathematics.html">Practice Now →</a>
+        </div>
+      </div>
+
+      <!-- Physics -->
+      <div class="subject-card" style="--accent:#0EA5A4; --accent-soft:#E1FAF7;">
+        <div class="card-top">
+          <div class="subj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="10" ry="4.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(120 12 12)"/></svg></div>
+          <div class="completion-pill">25% done</div>
+        </div>
+        <div class="card-title">Physics</div>
+        <div class="card-sub">Mechanics, electricity & modern physics</div>
+        <div class="prog-track"><div class="prog-fill" style="width:25%;"></div></div>
+        <div class="card-bottom">
+          <div class="qcount"><b>20</b>/80 questions</div>
+          <a class="practice-btn" href="subject/physics.html">Practice Now →</a>
+        </div>
+      </div>
+
+      <!-- Chemistry -->
+      <div class="subject-card" style="--accent:#E2447C; --accent-soft:#FFE9F1;">
+        <div class="card-top">
+          <div class="subj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6M10 3v6l-5.5 9.5A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-2.5L14 9V3"/><path d="M8 15h8"/></svg></div>
+          <div class="completion-pill">44% done</div>
+        </div>
+        <div class="card-title">Chemistry</div>
+        <div class="card-sub">Organic, inorganic & physical chemistry</div>
+        <div class="prog-track"><div class="prog-fill" style="width:44%;"></div></div>
+        <div class="card-bottom">
+          <div class="qcount"><b>35</b>/80 questions</div>
+          <a class="practice-btn" href="subject/chemistry.html">Practice Now →</a>
+        </div>
+      </div>
+
+      <!-- Biology -->
+      <div class="subject-card" style="--accent:#22A559; --accent-soft:#E4FBEC;">
+        <div class="card-top">
+          <div class="subj-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20c8 0 12-6 12-14 0 8-4 10-12 10"/><path d="M4 20c0-6 3-9 8-11"/></svg></div>
+          <div class="completion-pill">61% done</div>
+        </div>
+        <div class="card-title">Biology</div>
+        <div class="card-sub">Botany, zoology, genetics & ecology</div>
+        <div class="prog-track"><div class="prog-fill" style="width:61%;"></div></div>
+        <div class="card-bottom">
+          <div class="qcount"><b>49</b>/80 questions</div>
+          <a class="practice-btn" href="subject/biology.html">Practice Now →</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  const sidebarToggle = document.querySelector('.sidebar-toggle');
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.querySelector('.sidebar-backdrop');
+
+  function setSidebarOpen(isOpen) {
+    sidebar.classList.toggle('open', isOpen);
+    backdrop.classList.toggle('open', isOpen);
+    document.body.classList.toggle('sidebar-open', isOpen);
+    sidebarToggle?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  function toggleSidebar() {
+    setSidebarOpen(!sidebar.classList.contains('open'));
+  }
+
+  sidebarToggle?.addEventListener('click', toggleSidebar);
+  backdrop?.addEventListener('click', () => setSidebarOpen(false));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && sidebar.classList.contains('open')) {
+      setSidebarOpen(false);
+    }
+  });
+</script>
+</body>
+</html>

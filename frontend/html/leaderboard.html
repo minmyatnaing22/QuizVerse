@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuizVerse — Leaderboard</title>
+  <link rel="stylesheet" href="../css/leaderboard_style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar-backdrop"></div>
+    <aside class="sidebar">
+      <div class="brand"><span class="dot"></span> QuizVerse <span style="opacity:.55;font-weight:500;font-size:13px;">· Grade 12</span></div>
+
+      <div class="profile-card">
+        <div class="avatar-ring">
+          <svg width="88" height="88" viewBox="0 0 88 88">
+            <circle cx="44" cy="44" r="40" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="6"/>
+            <circle cx="44" cy="44" r="40" fill="none" stroke="#FFC93C" stroke-width="6" stroke-linecap="round"
+              stroke-dasharray="251.2" stroke-dashoffset="90.4"/>
+          </svg>
+          <div class="avatar-fallback">TZ</div>
+          <div class="level-badge">12</div>
+        </div>
+        <div class="student-name">Thiri Zaw</div>
+        <div class="student-meta">Grade 12</div>
+
+        <div class="xp-wrap">
+          <div class="xp-labels"><span>XP · Level 12</span><span>3,180 / 5,000</span></div>
+          <div class="xp-track"><div class="xp-fill"></div></div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-chip"><div class="val">💥 3,180</div><div class="lbl">EXP</div></div>
+          <div class="stat-chip"><div class="val">🏆 #14</div><div class="lbl">Rank</div></div>
+          <div class="stat-chip"><div class="val">🔥 18</div><div class="lbl">Day streak</div></div>
+          <div class="stat-chip"><div class="val">🎯 82%</div><div class="lbl">Accuracy</div></div>
+        </div>
+        <div class="stat-chip full-width">
+          <span class="lbl">Questions answered</span><span class="val">2,430</span>
+        </div>
+        <button class="continue-btn">▶ Continue Practice</button>
+      </div>
+
+      <div class="countdown">
+        <div class="num">128</div>
+        <div class="txt">days left to the<br><b style="color:#fff;">Matriculation Exam</b></div>
+      </div>
+
+      <nav class="nav-list">
+        <a class="nav-item" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>Home</span></a>
+        <a class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 5H4a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4"/><path d="M17 5h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4"/></svg><span>Leaderboard</span></a>
+        <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l4 2"/></svg><span>Practice History</span></a>
+        <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></a>
+        <a class="nav-item logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span>Logout</span></a>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="mobile-header">
+        <div class="mobile-brand"><span class="dot"></span> QuizVerse</div>
+        <button class="sidebar-toggle" aria-label="Open menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16"/>
+            <path d="M4 12h16"/>
+            <path d="M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+      <div class="top-row">
+        <div class="heading-block">
+          <h1>Leaderboard</h1>
+          <p>Track the top learners by experience, accuracy, and daily streaks.</p>
+        </div>
+        <a class="back-link" href="index.html">← Back to Home</a>
+      </div>
+
+      <div class="hero-panel">
+        <div class="hero-copy">
+          <div class="eyebrow">Weekly Ranking</div>
+          <h2>Stay sharp and climb the chart</h2>
+          <p>Every practice session adds XP, improves your streak, and pushes your accuracy higher.</p>
+        </div>
+        <div class="hero-stats">
+          <div class="mini-card">
+            <div class="value">#3</div>
+            <div class="label">Your rank</div>
+          </div>
+          <div class="mini-card">
+            <div class="value">3,180</div>
+            <div class="label">XP earned</div>
+          </div>
+          <div class="mini-card">
+            <div class="value">82%</div>
+            <div class="label">Accuracy</div>
+          </div>
+        </div>
+      </div>
+
+      <section class="leaderboard-card">
+        <div class="table-head">
+          <h3>Top performers</h3>
+          <span class="pill">Updated just now</span>
+        </div>
+
+        <div class="leaderboard-table">
+          <div class="table-row table-header">
+            <span>Rank</span>
+            <span>Username</span>
+            <span>Exp Point</span>
+            <span>Question Answered</span>
+            <span>Streak</span>
+            <span>Accuracy</span>
+          </div>
+
+          <div class="table-row top-row-entry">
+            <span class="rank-badge gold">1</span>
+            <span class="user-cell"><strong>Min Thant</strong><small>Top scorer this week</small></span>
+            <span>12,450</span>
+            <span>3,120</span>
+            <span>24</span>
+            <span>94%</span>
+          </div>
+
+          <div class="table-row">
+            <span class="rank-badge silver">2</span>
+            <span class="user-cell"><strong>Yoon Aye</strong><small>Consistent daily practice</small></span>
+            <span>11,820</span>
+            <span>2,980</span>
+            <span>21</span>
+            <span>91%</span>
+          </div>
+
+          <div class="table-row">
+            <span class="rank-badge bronze">3</span>
+            <span class="user-cell"><strong>Thiri Zaw</strong><small>Focused on physics & maths</small></span>
+            <span>10,960</span>
+            <span>2,430</span>
+            <span>18</span>
+            <span>82%</span>
+          </div>
+
+          <div class="table-row">
+            <span class="rank-badge">4</span>
+            <span class="user-cell"><strong>Aye Chan</strong><small>Steady improvement</small></span>
+            <span>9,780</span>
+            <span>2,160</span>
+            <span>15</span>
+            <span>79%</span>
+          </div>
+
+          <div class="table-row">
+            <span class="rank-badge">5</span>
+            <span class="user-cell"><strong>Hsu Htet</strong><small>Strong biology accuracy</small></span>
+            <span>9,140</span>
+            <span>2,040</span>
+            <span>13</span>
+            <span>77%</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script>
+  const sidebarToggle = document.querySelector('.sidebar-toggle');
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.querySelector('.sidebar-backdrop');
+
+  function setSidebarOpen(isOpen) {
+    sidebar.classList.toggle('open', isOpen);
+    backdrop.classList.toggle('open', isOpen);
+    document.body.classList.toggle('sidebar-open', isOpen);
+    sidebarToggle?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+
+  function toggleSidebar() {
+    setSidebarOpen(!sidebar.classList.contains('open'));
+  }
+
+  sidebarToggle?.addEventListener('click', toggleSidebar);
+  backdrop?.addEventListener('click', () => setSidebarOpen(false));
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && sidebar.classList.contains('open')) {
+      setSidebarOpen(false);
+    }
+  });
+</script>
+</body>
+</html>
