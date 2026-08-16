@@ -1,6 +1,6 @@
 const db = require("../config/database");
 
-function getQuizByChapter(chapter_id, callback) {
+function getQuizByChapter(chapter_id, type, callback) {
 
     const sql = `
         SELECT
@@ -18,6 +18,7 @@ function getQuizByChapter(chapter_id, callback) {
             ON q.id = o.question_id
 
         WHERE q.chapter_id = ?
+        AND q.question_type = ?
         AND q.is_active = 1
 
         ORDER BY
@@ -25,7 +26,7 @@ function getQuizByChapter(chapter_id, callback) {
             o.option_label;
     `;
 
-    db.all(sql, [chapter_id], (err, rows) => {
+    db.all(sql, [chapter_id, type], (err, rows) => {
 
         if (err) {
             return callback(err);
@@ -66,65 +67,78 @@ function getQuizByChapter(chapter_id, callback) {
 
 
 
-
-function calculateScore(answers, callback){
-
-    let score = 0;
-
-    let total = answers.length;
-
-    let completed = 0;
+function calculateScore(chapter_id, question_type, answers, callback) {
 
 
-    answers.forEach((answer)=>{
+    const sql = `
+        SELECT
+            q.id,
+            qa.correct_answer
+        FROM questions q
+        INNER JOIN question_answers qa
+            ON q.id = qa.question_id
+        WHERE q.chapter_id = ?
+        AND q.question_type = ?
+        AND q.is_active = 1;
+    `;
 
+    db.all(
+        sql,
+        [chapter_id, question_type],
+        (err, questions) => {
 
-        const sql = `
-            SELECT correct_answer
-            FROM question_answers
-            WHERE question_id = ?
-        `;
+            if (err) {
+                return callback(err);
+            }
 
+            if (questions.length === 0) {
+                return callback(
+                    new Error("No questions found for this chapter.")
+                );
+            }
 
-        db.get(
-            sql,
-            [answer.question_id],
-            (err,row)=>{
+            let score = 0;
 
+            questions.forEach((question) => {
 
-                if(err){
-                    return callback(err);
+                const answer = answers.find(
+                    (answer) =>
+                        answer.question_id === question.id
+                );
+
+                if (!answer) {
+                    return;
                 }
 
-
                 if (
-                    row.correct_answer.trim().toUpperCase() ===
-                    answer.answer.trim().toUpperCase()
+                    answer.selected_answer
+                        .trim()
+                        .toUpperCase()
+                    ===
+                    question.correct_answer
+                        .trim()
+                        .toUpperCase()
                 ) {
                     score++;
                 }
 
+            });
 
-                completed++;
+            const total = questions.length;
 
+            callback(null, {
+                total_questions: total,
+                correct_answers: score,
+                wrong_answers: total - score,
+                percentage: (score / total) * 100
+            });
 
-                if(completed === total){
+        }
+    );
 
-                    callback(null,{
-                        total_questions: total,
-                        correct_answers: score,
-                        wrong_answers: total-score,
-                        percentage: (score/total)*100
-                    });
-
-                }
-
-            }
-        );
-
-    });
 
 }
+
 
 
 function saveQuizAttempt(chapter_id, score, total_questions, percentage, callback) {

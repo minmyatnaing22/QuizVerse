@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+
+<body>
+
+    <h1>Subjects</h1>
+
+    <div id="subjects"></div>
+
+    <h2>Chapters</h2>
+
+    <div id="chapters"></div>
+
+    <h2>Quiz</h2>
+
+    <div id="quiz"></div>
+
+    <button id="submitQuiz">Submit Quiz</button>
+
+    <div id="result"></div>
+    <script>
+
+        let quiz = [];
+
+        async function loadSubjects() {
+
+            const response = await fetch(
+                "http://localhost:3000/subjects"
+            );
+
+            const subjects = await response.json();
+
+            console.log(subjects);
+
+            const subjectsContainer =
+                document.getElementById("subjects");
+
+            subjects.forEach(subject => {
+
+                const subjectElement = document.createElement("div");
+
+                subjectElement.textContent = subject.name;
+
+                subjectElement.addEventListener("click", () => {
+                    loadChapters(subject.id);
+                });
+
+                subjectsContainer.appendChild(subjectElement);
+
+            });
+        }
+
+    
+
+
+        async function loadChapters(subjectId) {
+
+        const response = await fetch(
+            `http://localhost:3000/chapters?subject_id=${subjectId}`
+        );
+
+        const chapters = await response.json();
+
+        const chaptersContainer = document.getElementById("chapters");
+
+        chaptersContainer.innerHTML = "";
+
+        chapters.forEach(chapter => {
+
+            const chapterElement = document.createElement("div");
+
+            chapterElement.textContent =
+                `${chapter.chapter_number}. ${chapter.chapter_name}`;
+
+            chaptersContainer.appendChild(chapterElement);
+
+        });
+    }
+
+    async function loadQuiz(chapterId) {
+
+        const response = await fetch(
+            `http://localhost:3000/quiz?chapter_id=${chapterId}`
+        );
+
+        quiz = await response.json();
+
+        const quizContainer = document.getElementById("quiz");
+
+        quizContainer.innerHTML = "";
+
+        quiz.forEach(question => {
+
+            const questionElement = document.createElement("div");
+
+            questionElement.innerHTML = `
+                <h3>
+                    ${question.question_number}. ${question.question_text}
+                </h3>
+            `;
+
+            question.options.forEach(option => {
+
+                const optionElement = document.createElement("div");
+
+                optionElement.innerHTML = `
+                    <label>
+                        <input
+                            type="radio"
+                            name="question-${question.id}"
+                            value="${option.label}"
+                        >
+                        ${option.label}. ${option.text}
+                    </label>
+                `;
+
+                questionElement.appendChild(optionElement);
+            });
+
+            quizContainer.appendChild(questionElement);
+
+        });
+    }
+
+    document.getElementById("submitQuiz").addEventListener("click", () => {
+
+        const answers = [];
+
+        quiz.forEach(question => {
+
+            const selectedOption =
+                document.querySelector(
+                    `input[name="question-${question.id}"]:checked`
+                );
+
+            if (selectedOption) {
+
+                answers.push({
+                    question_id: question.id,
+                    selected_answer: selectedOption.value
+                });
+
+            }
+
+        });
+
+        console.log(answers);
+
+    });
+
+        loadSubjects();
+        loadQuiz(36);
+    </script>
+
+</body>
+</html>

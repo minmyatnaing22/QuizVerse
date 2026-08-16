@@ -19,7 +19,7 @@
         </div>
 
         <nav class="nav-list">
-          <a class="nav-item active" href="myanmar.html">
+          <a class="nav-item active" href="myanmar.html?subject_id=1">
             <span class="subject-name">Myanmar</span>
             <span class="progress-meta">
               <span class="progress-track"><span class="progress-fill" style="width: 56%"></span></span>
@@ -100,33 +100,22 @@
                 <h2>TRUE/FALSE Challenge</h2>
                 <p>Choose whether each Myanmar-language statement is correct or incorrect.</p>
               </div>
-              <div class="chapter-grid">
-                <article class="chapter-card"><h3>စကားသံသဘောတရား</h3><p>True or false: the sentence meaning changes when the word order changes.</p><a class="start-btn" href="#">Start T/F</a></article>
-                <article class="chapter-card"><h3>အဖတ်အရွတ်</h3><p>True or false: punctuation marks help improve reading clarity.</p><a class="start-btn" href="#">Start T/F</a></article>
-                <article class="chapter-card"><h3>အရေးအသား</h3><p>True or false: a strong paragraph should contain one clear main idea.</p><a class="start-btn" href="#">Start T/F</a></article>
-              </div>
+          <div class="chapter-grid" id="true-chapters"></div>
+
             </section>
             <section class="category-panel" id="myanmar-panel-mcq">
               <div class="panel-intro">
                 <h2>MCQ Challenge</h2>
                 <p>Pick the best option for each language or literature question.</p>
               </div>
-              <div class="chapter-grid">
-                <article class="chapter-card"><h3>စကားသံသဘောတရား</h3><p>Choose the best answer for grammar and word-form questions.</p><a class="start-btn" href="#">Start MCQ</a></article>
-                <article class="chapter-card"><h3>အဖတ်အရွတ်</h3><p>Practice reading and literary interpretation with multiple choices.</p><a class="start-btn" href="#">Start MCQ</a></article>
-                <article class="chapter-card"><h3>အရေးအသား</h3><p>Test your paragraph and essay-writing choices with clear options.</p><a class="start-btn" href="#">Start MCQ</a></article>
-              </div>
+              <div class="chapter-grid" id="mcq-chapters"></div>
             </section>
             <section class="category-panel" id="myanmar-panel-blank">
               <div class="panel-intro">
                 <h2>BLANK Challenge</h2>
                 <p>Fill in the missing words and ideas to strengthen recall.</p>
               </div>
-              <div class="chapter-grid">
-                <article class="chapter-card"><h3>စကားသံသဘောတရား</h3><p>Complete the missing words in grammar and vocabulary statements.</p><a class="start-btn" href="#">Start Blank</a></article>
-                <article class="chapter-card"><h3>အဖတ်အရွတ်</h3><p>Fill the blanks in literary and reading comprehension prompts.</p><a class="start-btn" href="#">Start Blank</a></article>
-                <article class="chapter-card"><h3>အရေးအသား</h3><p>Complete the key terms used in writing and essay practice.</p><a class="start-btn" href="#">Start Blank</a></article>
-              </div>
+              <div class="chapter-grid" id="blank-chapters"></div>
             </section>
           </div>
         </div>
@@ -158,5 +147,7 @@
     }
   });
 </script>
+
+<script src="../../js/subject.js"></script>
   </body>
 </html>
