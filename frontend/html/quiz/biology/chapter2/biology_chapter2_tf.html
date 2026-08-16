@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizVerse | Biology Chapter 2 T/F</title>
+  <link rel="stylesheet" href="../../../../css/quiz_style/quiz_style.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar-backdrop"></div>
+    <aside class="sidebar">
+      <div class="brand"><span class="dot"></span> QuizVerse <span style="opacity:.55;font-weight:500;font-size:13px;">· Grade 12</span></div>
+      <div class="profile-card">
+        <div class="avatar-ring"><div class="avatar-fallback">TZ</div></div>
+        <div class="student-name">Thiri Zaw</div>
+        <div class="student-meta">Biology Practice</div>
+        <button class="continue-btn">▶ Continue Practice</button>
+      </div>
+      <nav class="nav-list">
+        <a class="nav-item" href="../../../subject/biology.html"><span class="subject-name">Back to Chapter Section</span></a>
+        <a class="nav-item" href="../../../subject/myanmar.html"><span class="subject-name">Myanmar</span><span class="progress-meta"><span class="progress-track"><span class="progress-fill" style="width: 56%"></span></span><span class="progress-value">56%</span></span></a>
+        <a class="nav-item" href="../../../subject/english.html"><span class="subject-name">English</span><span class="progress-meta"><span class="progress-track"><span class="progress-fill" style="width: 38%"></span></span><span class="progress-value">38%</span></span></a>
+        <a class="nav-item" href="../../../subject/mathematics.html"><span class="subject-name">Mathematics</span><span class="progress-meta"><span class="progress-track"><span class="progress-fill" style="width: 70%"></span></span><span class="progress-value">70%</span></span></a>
+        <a class="nav-item" href="../../../subject/physics.html"><span class="subject-name">Physics</span><span class="progress-meta"><span class="progress-track"><span class="progress-fill" style="width: 25%"></span></span><span class="progress-value">25%</span></span></a>
+        <a class="nav-item" href="../../../subject/chemistry.html"><span class="subject-name">Chemistry</span><span class="progress-meta"><span class="progress-track"><span class="progress-fill" style="width: 44%"></span></span><span class="progress-value">44%</span></span></a>
+        <a class="nav-item active" href="../../../subject/biology.html"><span class="subject-name">Biology</span><span class="progress-meta"><span class="progress-track"><span class="progress-fill" style="width: 61%"></span></span><span class="progress-value">61%</span></span></a>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="mobile-header">
+        <div class="mobile-brand"><span class="dot"></span> QuizVerse</div>
+        <button class="sidebar-toggle" aria-label="Open menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16"/>
+            <path d="M4 12h16"/>
+            <path d="M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="top-row">
+        <div class="heading-block">
+          <h1>Biology Chapter 2</h1>
+          <p>True / False practice for the second biology chapter. Choose only one answer for each item.</p>
+        </div>
+      </div>
+
+      <div class="panel-intro tf-panel">
+        <h2>True / False Quiz</h2>
+        <p>Answer five Chapter 2 statements with TRUE or FALSE.</p>
+      </div>
+
+      <form class="quiz-grid single-column" action="../../../result/biology/chapter2/biology_chapter2_tf_result.html" method="get" novalidate>
+        <article class="quiz-card">
+          <div class="quiz-question"><span>1.</span> If x + 5 = 9 then x = 4.</div>
+          <div class="option-list">
+            <label class="option-label"><input type="radio" name="q1" value="true" /> TRUE</label>
+            <label class="option-label"><input type="radio" name="q1" value="false" /> FALSE</label>
+          </div>
+        </article>
+
+        <article class="quiz-card">
+          <div class="quiz-question"><span>2.</span> The product of two negative numbers is negative.</div>
+          <div class="option-list">
+            <label class="option-label"><input type="radio" name="q2" value="true" /> TRUE</label>
+            <label class="option-label"><input type="radio" name="q2" value="false" /> FALSE</label>
+          </div>
+        </article>
+
+        <article class="quiz-card">
+          <div class="quiz-question"><span>3.</span> A triangle's interior angles always sum to 180°.</div>
+          <div class="option-list">
+            <label class="option-label"><input type="radio" name="q3" value="true" /> TRUE</label>
+            <label class="option-label"><input type="radio" name="q3" value="false" /> FALSE</label>
+          </div>
+        </article>
+
+        <article class="quiz-card">
+          <div class="quiz-question"><span>4.</span> The area of a square is side × 2.</div>
+          <div class="option-list">
+            <label class="option-label"><input type="radio" name="q4" value="true" /> TRUE</label>
+            <label class="option-label"><input type="radio" name="q4" value="false" /> FALSE</label>
+          </div>
+        </article>
+
+        <article class="quiz-card">
+          <div class="quiz-question"><span>5.</span> Zero is a positive number.</div>
+          <div class="option-list">
+            <label class="option-label"><input type="radio" name="q5" value="true" /> TRUE</label>
+            <label class="option-label"><input type="radio" name="q5" value="false" /> FALSE</label>
+          </div>
+        </article>
+
+        <button type="submit" class="submit-btn">Submit Answers</button>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const backdrop = document.querySelector('.sidebar-backdrop');
+
+    function setSidebarOpen(isOpen) {
+      sidebar.classList.toggle('open', isOpen);
+      backdrop.classList.toggle('open', isOpen);
+      document.body.classList.toggle('sidebar-open', isOpen);
+      sidebarToggle?.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    }
+
+    function toggleSidebar() {
+      setSidebarOpen(!sidebar.classList.contains('open'));
+    }
+
+    sidebarToggle?.addEventListener('click', toggleSidebar);
+    backdrop?.addEventListener('click', () => setSidebarOpen(false));
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && sidebar.classList.contains('open')) {
+        setSidebarOpen(false);
+      }
+    });
+  </script>
+</body>
+</html>
