@@ -41,44 +41,27 @@
       </div>
 
       <div class="top-row">
-        <div class="heading-block">
-          <h1>Mathematics Chapter 1</h1>
-          <p>Blank answer practice for the first mathematics chapter. Type each missing value in the box below.</p>
-        </div>
+          <div class="heading-block">
+              <h1 id="page-title">Loading...</h1>
+              <p id="page-description">Loading quiz...</p>
+          </div>
       </div>
 
       <div class="panel-intro blank-panel">
-        <h2>Fill in the Blank Quiz</h2>
-        <p>Write your answer in the box below each question.</p>
+          <h2 id="quiz-title">Quiz</h2>
+          <p id="quiz-description">Loading questions...</p>
       </div>
 
-      <form class="quiz-grid single-column" action="../../../result/mathematics/chapter1/mathematics_chapter1_blank_result.html" method="get" novalidate>
-        <article class="quiz-card">
-          <div class="quiz-question"><span>1.</span> Complete the equation: 7 + ___ = 12.</div>
-          <label class="answer-field"><span>Answer</span><input type="text" name="q1" placeholder="Type your answer" /></label>
-        </article>
+      <form class="quiz-grid single-column" id="quiz-form">
 
-        <article class="quiz-card">
-          <div class="quiz-question"><span>2.</span> A right triangle has one angle of 90°. The sum of the other two angles is ___°.</div>
-          <label class="answer-field"><span>Answer</span><input type="text" name="q2" placeholder="Type your answer" /></label>
-        </article>
+          <div id="questions-container">
+              Loading questions...
+          </div>
 
-        <article class="quiz-card">
-          <div class="quiz-question"><span>3.</span> Solve for x: x − 4 = 9, so x = ___.</div>
-          <label class="answer-field"><span>Answer</span><input type="text" name="q3" placeholder="Type your answer" /></label>
-        </article>
+          <button type="submit" class="submit-btn">
+              Submit Answers
+          </button>
 
-        <article class="quiz-card">
-          <div class="quiz-question"><span>4.</span> The symbol for degrees is ___.</div>
-          <label class="answer-field"><span>Answer</span><input type="text" name="q4" placeholder="Type your answer" /></label>
-        </article>
-
-        <article class="quiz-card">
-          <div class="quiz-question"><span>5.</span> A 3–4–5 triangle is a ___ triangle.</div>
-          <label class="answer-field"><span>Answer</span><input type="text" name="q5" placeholder="Type your answer" /></label>
-        </article>
-
-        <button type="submit" class="submit-btn">Submit Answers</button>
       </form>
     </main>
   </div>
@@ -108,5 +91,6 @@
       }
     });
   </script>
+  <script src="../../../../js/quiz.js"></script>
 </body>
 </html>
