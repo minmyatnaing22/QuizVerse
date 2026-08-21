@@ -3,7 +3,9 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: true
+}));
 app.use(express.json());
 
 const PORT = 3000;
@@ -36,6 +38,16 @@ app.use("/question-answer", questionAnswerRoutes);
 const quizRoutes = require("./routes/quizRoutes");
 
 app.use("/quiz", quizRoutes);
+
+
+const userRoutes = require("./routes/userRoutes");
+
+app.use("/users", userRoutes);
+
+
+const statsRoutes = require("./routes/statsRoutes");
+
+app.use("/", statsRoutes);
 
 
 

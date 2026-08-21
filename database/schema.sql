@@ -71,11 +71,24 @@ CREATE TABLE question_options (
         REFERENCES questions(id)
 );
 
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE quiz_attempts (
 
     id INTEGER PRIMARY KEY AUTOINCREMENT,
 
-    chapter_id INTEGER NOT NULL UNIQUE,
+    user_id INTEGER NOT NULL,
+
+    chapter_id INTEGER NOT NULL,
+
+    question_type TEXT NOT NULL
+        CHECK (question_type IN ('MCQ', 'TRUE_FALSE', 'BLANK')),
 
     score INTEGER NOT NULL,
 
@@ -83,7 +96,10 @@ CREATE TABLE quiz_attempts (
 
     percentage REAL NOT NULL,
 
-    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (user_id)
+        REFERENCES users(id),
 
     FOREIGN KEY (chapter_id)
         REFERENCES chapters(id)

@@ -1,14 +1,83 @@
-const params = new URLSearchParams(window.location.search);
-const subjectId = params.get("subject_id");
+function getPageSubjectName() {
 
-console.log("Subject ID:", subjectId);
+    const file = window.location.pathname.split("/").pop() || "";
 
-fetch(`http://localhost:3000/chapters?subject_id=${subjectId}`)
-    .then(response => response.json())
+    return file.replace(/\.html$/i, "");
+
+}
+
+
+function resolveSubjectId() {
+
+    const fromUrl = new URLSearchParams(window.location.search)
+        .get("subject_id");
+
+    if (fromUrl) {
+        return Promise.resolve(fromUrl);
+    }
+
+    return fetch("http://localhost:3000/subjects")
+        .then(response => response.json())
+        .then(subjects => {
+
+            const pageName = getPageSubjectName();
+
+            const subject = subjects.find(item =>
+                item.name.toLowerCase() === pageName.toLowerCase()
+            );
+
+            if (!subject) {
+                throw new Error(
+                    "Could not determine subject_id for this page"
+                );
+            }
+
+            return String(subject.id);
+
+        });
+
+}
+
+
+function getSupportedTypes(chapters) {
+
+    const types = [];
+
+    chapters.forEach(chapter => {
+
+        (chapter.question_types || []).forEach(type => {
+
+            if (!types.includes(type)) {
+                types.push(type);
+            }
+
+        });
+
+    });
+
+    return types.length > 0 ? types : ["MCQ"];
+
+}
+
+
+resolveSubjectId()
+    .then(subjectId => {
+
+        console.log("Subject ID:", subjectId);
+
+        return fetch(
+            `http://localhost:3000/chapters?subject_id=${subjectId}`
+        ).then(response => response.json());
+
+    })
     .then(chapters => {
 
         console.log("Chapters from backend:");
         console.log(chapters);
+
+        const supportedTypes = getSupportedTypes(chapters);
+
+        console.log("Supported types:", supportedTypes);
 
         const mcqContainer =
             document.getElementById("mcq-chapters");
@@ -27,37 +96,31 @@ fetch(`http://localhost:3000/chapters?subject_id=${subjectId}`)
                 chapter.question_types
             );
 
+            const types = chapter.question_types.length > 0
+                ? chapter.question_types
+                : supportedTypes;
 
-            // ==================================
-            // MCQ
-            // Show ALL chapters
-            // ==================================
+            types.forEach(questionType => {
 
-            if (mcqContainer) {
+                if (questionType === "MCQ" && mcqContainer) {
+                    mcqContainer.appendChild(
+                        createChapterCard(chapter, "MCQ")
+                    );
+                }
 
-                const card = createChapterCard(
-                    chapter,
-                    "MCQ"
-                );
+                if (questionType === "TRUE_FALSE" && trueContainer) {
+                    trueContainer.appendChild(
+                        createChapterCard(chapter, "TRUE_FALSE")
+                    );
+                }
 
-                mcqContainer.appendChild(card);
-            }
+                if (questionType === "BLANK" && blankContainer) {
+                    blankContainer.appendChild(
+                        createChapterCard(chapter, "BLANK")
+                    );
+                }
 
-
-            // ==================================
-            // TRUE / FALSE
-            // Currently no Mathematics T/F
-            // ==================================
-
-            // Don't create cards here.
-
-
-            // ==================================
-            // BLANK
-            // Currently no Mathematics Blank
-            // ==================================
-
-            // Don't create cards here.
+            });
 
         });
 
@@ -83,6 +146,14 @@ function createChapterCard(chapter, questionType) {
 
     if (questionType === "MCQ") {
         buttonText = "Start MCQ";
+    }
+
+    if (questionType === "TRUE_FALSE") {
+        buttonText = "Start T/F";
+    }
+
+    if (questionType === "BLANK") {
+        buttonText = "Start Blank";
     }
 
 

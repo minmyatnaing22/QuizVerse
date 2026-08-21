@@ -12,6 +12,7 @@ const pageDescription = document.getElementById("page-description");
 
 const quizTitle = document.getElementById("quiz-title");
 const quizDescription = document.getElementById("quiz-description");
+const quizPanel = document.getElementById("quiz-panel");
 
 const questionsContainer =
     document.getElementById("questions-container");
@@ -19,11 +20,20 @@ const questionsContainer =
 const quizForm =
     document.getElementById("quiz-form");
 
+const validTypes = ["MCQ", "TRUE_FALSE", "BLANK"];
+
+let loadedQuestions = [];
+
 
 if (!chapterId || !questionType) {
 
     questionsContainer.innerHTML =
         "<p>Invalid quiz URL.</p>";
+
+} else if (!validTypes.includes(questionType)) {
+
+    questionsContainer.innerHTML =
+        "<p>Invalid question type.</p>";
 
 } else {
 
@@ -35,7 +45,7 @@ if (!chapterId || !questionType) {
 function loadQuiz() {
 
     fetch(
-        `http://localhost:3000/quiz?chapter_id=${chapterId}`
+        `http://localhost:3000/quiz?chapter_id=${chapterId}&type=${questionType}`
     )
 
         .then(response => {
@@ -48,17 +58,11 @@ function loadQuiz() {
 
         })
 
-        .then(quizData => {
+        .then(questions => {
 
-            console.log("Quiz data:", quizData);
+            console.log("Quiz data:", questions);
 
-            // Only keep the requested question type
-            const questions = quizData.filter(
-                question =>
-                    question.question_type === questionType
-            );
-
-            console.log("Filtered questions:", questions);
+            loadedQuestions = questions;
 
             setupPage(questions);
 
@@ -94,18 +98,60 @@ function setupPage(questions) {
         typeName = questionType;
     }
 
+    const first = questions[0];
+    const subjectName = first?.subject_name || "QuizVerse";
+    const chapterNumber = first?.chapter_number;
+    const chapterName = first?.chapter_name || "";
 
-    pageTitle.textContent =
-        `Mathematics Chapter ${chapterId}`;
+    if (chapterNumber != null && chapterName) {
+        pageTitle.textContent =
+            `Chapter ${chapterNumber}: ${chapterName}`;
+    }
+    else if (chapterNumber != null) {
+        pageTitle.textContent =
+            `Chapter ${chapterNumber}`;
+    }
+    else {
+        pageTitle.textContent = "Quiz";
+    }
 
     quizTitle.textContent =
         `${typeName} Quiz`;
 
     pageDescription.textContent =
-        `Practice ${typeName} questions from this mathematics chapter.`;
+        `Practice ${typeName} questions from this chapter.`;
 
     quizDescription.textContent =
-        `Answer all ${questions.length} questions below.`;
+        questions.length === 0
+            ? "No questions available for this quiz."
+            : `Answer all ${questions.length} questions below.`;
+
+    if (quizPanel) {
+        quizPanel.classList.remove("mcq-panel", "tf-panel", "blank-panel");
+
+        if (questionType === "MCQ") {
+            quizPanel.classList.add("mcq-panel");
+        }
+        else if (questionType === "TRUE_FALSE") {
+            quizPanel.classList.add("tf-panel");
+        }
+        else {
+            quizPanel.classList.add("blank-panel");
+        }
+    }
+
+    const studentMeta = document.getElementById("student-meta");
+    if (studentMeta) {
+        studentMeta.textContent = `${subjectName} Practice`;
+    }
+
+    const backLink = document.getElementById("back-to-chapters");
+    if (backLink && first?.subject_name) {
+        backLink.href =
+            `subject/${first.subject_name.toLowerCase()}.html`;
+    }
+
+    document.title = `QuizVerse | ${pageTitle.textContent}`;
 
 }
 
@@ -131,15 +177,9 @@ function displayQuestions(questions) {
         card.classList.add("quiz-card");
 
 
-        if (questionType === "MCQ") {
+        if (questionType === "MCQ" || questionType === "TRUE_FALSE") {
 
-            card.innerHTML = createMCQ(question, index);
-
-        }
-
-        else if (questionType === "TRUE_FALSE") {
-
-            card.innerHTML = createTrueFalse(question, index);
+            card.innerHTML = createChoiceQuestion(question, index);
 
         }
 
@@ -157,22 +197,22 @@ function displayQuestions(questions) {
 }
 
 
-function createMCQ(question, index) {
+function createChoiceQuestion(question, index) {
 
     const optionsHTML =
-        question.options.map(option => {
+        (question.options || []).map(option => {
 
             return `
-                <label class="option">
+                <label class="option-label">
                     <input
                         type="radio"
                         name="q${question.id}"
-                        value="${option.option_label}"
+                        value="${option.label}"
                     >
 
                     <span>
-                        ${option.option_label}.
-                        ${option.option_text}
+                        ${option.label}.
+                        ${option.text}
                     </span>
                 </label>
             `;
@@ -186,50 +226,11 @@ function createMCQ(question, index) {
             ${question.question_text}
         </div>
 
-        <div class="options">
+        <div class="option-list">
             ${optionsHTML}
         </div>
     `;
 
-}
-
-function createTrueFalse(question, index) {
-
-    return `
-        <div class="quiz-question">
-            <span>${index + 1}.</span>
-            ${question.question_text}
-        </div>
-
-        <div class="options">
-
-            <label class="option">
-                <input
-                    type="radio"
-                    name="q${question.id}"
-                    value="TRUE"
-                >
-
-                <span>True</span>
-            </label>
-
-
-            <label class="option">
-                <input
-                    type="radio"
-                    name="q${question.id}"
-                    value="FALSE"
-                >
-
-                <span>False</span>
-            </label>
-
-        </div>
-    `;
-
-
-
-    
 }
 
 
@@ -257,22 +258,92 @@ function createBlank(question, index) {
 }
 
 
-quizForm.addEventListener("submit", function (event) {
+if (quizForm) {
 
-    event.preventDefault();
+    quizForm.addEventListener("submit", function (event) {
 
-    const formData =
-        new FormData(quizForm);
+        event.preventDefault();
 
-    const answers = {};
+        if (!chapterId || !questionType || loadedQuestions.length === 0) {
+            return;
+        }
 
-    formData.forEach((value, key) => {
+        const formData = new FormData(quizForm);
 
-        answers[key] = value;
+        const answers = loadedQuestions.map(question => {
+
+            const selected = formData.get(`q${question.id}`);
+
+            return {
+                question_id: Number(question.id),
+                selected_answer: selected ? String(selected) : ""
+            };
+
+        });
+
+        const body = {
+            chapter_id: Number(chapterId),
+            type: questionType,
+            answers
+        };
+
+        try {
+            const storedUser = JSON.parse(localStorage.getItem("quizVerseUser") || "null");
+            if (storedUser && storedUser.id) {
+                body.user_id = storedUser.id;
+            }
+        } catch (err) {
+            console.error("Could not read saved user:", err);
+        }
+
+        console.log("Submit body:", body);
+
+        fetch("http://localhost:3000/quiz/submit", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        })
+
+            .then(response => {
+
+                if (!response.ok) {
+                    throw new Error("Failed to submit quiz");
+                }
+
+                return response.json();
+
+            })
+
+            .then(result => {
+
+                console.log("Submit result:", result);
+
+                const first = loadedQuestions[0];
+
+                sessionStorage.setItem("quizVerseResult", JSON.stringify({
+                    chapter_id: Number(chapterId),
+                    type: questionType,
+                    chapter_number: first?.chapter_number,
+                    chapter_name: first?.chapter_name,
+                    subject_name: first?.subject_name,
+                    result
+                }));
+
+                window.location.href = "result.html";
+
+            })
+
+            .catch(error => {
+
+                console.error("Submit error:", error);
+
+                quizDescription.textContent =
+                    "Unable to submit quiz.";
+
+            });
 
     });
 
-
-    console.log("Answers:", answers);
-
-});
+}

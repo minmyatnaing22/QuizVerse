@@ -41,6 +41,7 @@ function submitQuiz(req, res) {
     const chapter_id = req.body.chapter_id;
     const answers = req.body.answers;
     const question_type = req.body.type;
+    const user_id = req.body.user_id;
 
     console.log("Chapter ID:", chapter_id);
     console.log("Question Type:", question_type);
@@ -77,8 +78,14 @@ function submitQuiz(req, res) {
                 });
             }
 
+            if (!user_id) {
+                return res.json(result);
+            }
+
             quizModel.saveQuizAttempt(
+                user_id,
                 chapter_id,
+                question_type,
                 result.correct_answers,
                 result.total_questions,
                 result.percentage,

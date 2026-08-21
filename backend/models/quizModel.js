@@ -9,10 +9,20 @@ function getQuizByChapter(chapter_id, type, callback) {
             q.question_text,
             q.question_type,
 
+            c.chapter_number,
+            c.chapter_name,
+            s.name AS subject_name,
+
             o.option_label,
             o.option_text
 
         FROM questions q
+
+        JOIN chapters c
+            ON q.chapter_id = c.id
+
+        JOIN subjects s
+            ON c.subject_id = s.id
 
         LEFT JOIN question_options o
             ON q.id = o.question_id
@@ -43,6 +53,9 @@ function getQuizByChapter(chapter_id, type, callback) {
                     question_number: row.question_number,
                     question_text: row.question_text,
                     question_type: row.question_type,
+                    chapter_number: row.chapter_number,
+                    chapter_name: row.chapter_name,
+                    subject_name: row.subject_name,
                     options: []
                 };
 
@@ -59,7 +72,12 @@ function getQuizByChapter(chapter_id, type, callback) {
 
         });
 
-        callback(null, Object.values(questions));
+        callback(
+            null,
+            Object.values(questions).sort(
+                (a, b) => a.question_number - b.question_number
+            )
+        );
 
     });
 
@@ -73,13 +91,16 @@ function calculateScore(chapter_id, question_type, answers, callback) {
     const sql = `
         SELECT
             q.id,
+            q.question_number,
+            q.question_text,
             qa.correct_answer
         FROM questions q
         INNER JOIN question_answers qa
             ON q.id = qa.question_id
         WHERE q.chapter_id = ?
         AND q.question_type = ?
-        AND q.is_active = 1;
+        AND q.is_active = 1
+        ORDER BY q.question_number;
     `;
 
     db.all(
@@ -98,29 +119,40 @@ function calculateScore(chapter_id, question_type, answers, callback) {
             }
 
             let score = 0;
+            let skipped = 0;
 
-            questions.forEach((question) => {
+            const reviews = questions.map((question) => {
 
                 const answer = answers.find(
                     (answer) =>
-                        answer.question_id === question.id
+                        Number(answer.question_id) === Number(question.id)
                 );
 
-                if (!answer) {
-                    return;
-                }
+                const selected = answer && answer.selected_answer
+                    ? String(answer.selected_answer).trim()
+                    : "";
 
-                if (
-                    answer.selected_answer
-                        .trim()
-                        .toUpperCase()
-                    ===
-                    question.correct_answer
-                        .trim()
-                        .toUpperCase()
-                ) {
+                const isSkipped = selected === "";
+                const isCorrect = !isSkipped &&
+                    selected.toUpperCase() ===
+                    String(question.correct_answer).trim().toUpperCase();
+
+                if (isSkipped) {
+                    skipped++;
+                }
+                else if (isCorrect) {
                     score++;
                 }
+
+                return {
+                    question_id: question.id,
+                    question_number: question.question_number,
+                    question_text: question.question_text,
+                    selected_answer: selected,
+                    correct_answer: question.correct_answer,
+                    is_correct: isCorrect,
+                    skipped: isSkipped
+                };
 
             });
 
@@ -129,8 +161,10 @@ function calculateScore(chapter_id, question_type, answers, callback) {
             callback(null, {
                 total_questions: total,
                 correct_answers: score,
-                wrong_answers: total - score,
-                percentage: (score / total) * 100
+                wrong_answers: total - score - skipped,
+                skipped_answers: skipped,
+                percentage: total === 0 ? 0 : (score / total) * 100,
+                reviews
             });
 
         }
@@ -141,26 +175,18 @@ function calculateScore(chapter_id, question_type, answers, callback) {
 
 
 
-function saveQuizAttempt(chapter_id, score, total_questions, percentage, callback) {
+function saveQuizAttempt(user_id, chapter_id, question_type, score, total_questions, percentage, callback) {
 
     const sql = `
         INSERT INTO quiz_attempts
-        (chapter_id, score, total_questions, percentage)
-
-        VALUES (?, ?, ?, ?)
-
-        ON CONFLICT(chapter_id)
-        DO UPDATE SET
-            score = excluded.score,
-            total_questions = excluded.total_questions,
-            percentage = excluded.percentage,
-            updated_at = CURRENT_TIMESTAMP;
+        (user_id, chapter_id, question_type, score, total_questions, percentage)
+        VALUES (?, ?, ?, ?, ?, ?)
     `;
 
     db.run(
         sql,
-        [chapter_id, score, total_questions, percentage],  
-        callback                  //=======????
+        [user_id, chapter_id, question_type, score, total_questions, percentage],
+        callback
     );
 
 }

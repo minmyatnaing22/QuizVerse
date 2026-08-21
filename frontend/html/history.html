@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QuizVerse — Leaderboard</title>
+  <title>QuizVerse — Practice History</title>
   <link rel="stylesheet" href="../css/leaderboard_style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -33,13 +33,13 @@
         </div>
 
         <div class="stat-grid">
-          <div class="stat-chip"><div class="val" id="sidebar-xp">💥 0</div><div class="lbl">EXP</div></div>
-          <div class="stat-chip"><div class="val" id="sidebar-rank">🏆 #—</div><div class="lbl">Rank</div></div>
-          <div class="stat-chip"><div class="val" id="sidebar-streak">🔥 0</div><div class="lbl">Day streak</div></div>
-          <div class="stat-chip"><div class="val" id="sidebar-accuracy">🎯 0%</div><div class="lbl">Accuracy</div></div>
+          <div class="stat-chip"><div class="val">💥 0</div><div class="lbl">EXP</div></div>
+          <div class="stat-chip"><div class="val">🏆 #—</div><div class="lbl">Rank</div></div>
+          <div class="stat-chip"><div class="val">🔥 0</div><div class="lbl">Day streak</div></div>
+          <div class="stat-chip"><div class="val">🎯 0%</div><div class="lbl">Accuracy</div></div>
         </div>
         <div class="stat-chip full-width">
-          <span class="lbl">Questions answered</span><span class="val" id="sidebar-questions">0</span>
+          <span class="lbl">Questions answered</span><span class="val">0</span>
         </div>
         <button class="continue-btn">▶ Continue Practice</button>
       </div>
@@ -51,9 +51,9 @@
 
       <nav class="nav-list">
         <a class="nav-item" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>Home</span></a>
-        <a class="nav-item active" href="leaderboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 5H4a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4"/><path d="M17 5h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4"/></svg><span>Leaderboard</span></a>
-        <a class="nav-item" href="history.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l4 2"/></svg><span>Practice History</span></a>
-        <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></a>
+        <a class="nav-item" href="leaderboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M7 5H4a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4"/><path d="M17 5h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4"/></svg><span>Leaderboard</span></a>
+        <a class="nav-item active" href="history.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l4 2"/></svg><span>Practice History</span></a>
+        <a class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l-.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span>Settings</span></a>
         <a class="nav-item logout" href="quizverse-auth.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg><span>Logout</span></a>
       </nav>
     </aside>
@@ -71,51 +71,37 @@
       </div>
       <div class="top-row">
         <div class="heading-block">
-          <h1>Leaderboard</h1>
-          <p>Track the top learners by experience, accuracy, and daily streaks.</p>
+          <h1>Practice History</h1>
+          <p>Review every quiz you have completed.</p>
         </div>
         <a class="back-link" href="index.html">← Back to Home</a>
       </div>
 
       <div class="hero-panel">
         <div class="hero-copy">
-          <div class="eyebrow">Weekly Ranking</div>
-          <h2>Stay sharp and climb the chart</h2>
-          <p>Every practice session adds XP, improves your streak, and pushes your accuracy higher.</p>
-        </div>
-        <div class="hero-stats">
-          <div class="mini-card">
-            <div class="value" id="hero-rank">#—</div>
-            <div class="label">Your rank</div>
-          </div>
-          <div class="mini-card">
-            <div class="value" id="hero-xp">0</div>
-            <div class="label">XP earned</div>
-          </div>
-          <div class="mini-card">
-            <div class="value" id="hero-accuracy">0%</div>
-            <div class="label">Accuracy</div>
-          </div>
+          <div class="eyebrow">Your attempts</div>
+          <h2>Keep practicing and watch your history grow</h2>
+          <p>Each submitted quiz is saved to your account so you can track progress by subject and chapter.</p>
         </div>
       </div>
 
       <section class="leaderboard-card">
         <div class="table-head">
-          <h3>Top performers</h3>
-          <span class="pill">Updated just now</span>
+          <h3>Recent practice</h3>
+          <span class="pill">Your account</span>
         </div>
 
         <div class="leaderboard-table">
           <div class="table-row table-header">
-            <span>Rank</span>
-            <span>Username</span>
-            <span>Exp Point</span>
-            <span>Question Answered</span>
-            <span>Streak</span>
+            <span>Date</span>
+            <span>Subject</span>
+            <span>Chapter</span>
+            <span>Type</span>
+            <span>Score</span>
             <span>Accuracy</span>
           </div>
 
-          <div id="leaderboard-rows"></div>
+          <div id="history-rows"></div>
         </div>
       </section>
     </main>
@@ -147,6 +133,6 @@
   });
 </script>
 <script src="../js/session.js"></script>
-<script src="../js/leaderboard.js"></script>
+<script src="../js/history.js"></script>
 </body>
 </html>
