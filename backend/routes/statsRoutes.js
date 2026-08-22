@@ -10,4 +10,6 @@ router.get("/leaderboard", statsController.getLeaderboard);
 
 router.get("/dashboard", statsController.getDashboard);
 
+router.get("/exam-days", statsController.getExamDays);
+
 module.exports = router;

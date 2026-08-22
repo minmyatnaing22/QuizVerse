@@ -46,11 +46,13 @@ function renderLeaderboard(rows) {
 
     list.innerHTML = rows.map((row, index) => {
         const rank = row.rank || index + 1;
+        const isYou = user && Number(row.user_id) === Number(user.id);
         const topClass = rank === 1 ? " top-row-entry" : "";
+        const youClass = isYou ? " is-you" : "";
         return `
-            <div class="table-row${topClass}">
+            <div class="table-row${topClass}${youClass}">
                 <span class="${rankClass(rank)}">${rank}</span>
-                <span class="user-cell"><strong>${escapeHtml(row.name)}</strong><small>Practice ranking</small></span>
+                <span class="user-cell"><strong>${escapeHtml(row.name)}</strong><small>${isYou ? "You" : "Practice ranking"}</small></span>
                 <span>${Number(row.xp) || 0}</span>
                 <span>${Number(row.questions_answered) || 0}</span>
                 <span>${Number(row.streak) || 0}</span>

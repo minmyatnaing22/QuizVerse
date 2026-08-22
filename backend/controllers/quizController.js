@@ -1,4 +1,5 @@
 const quizModel = require("../models/quizModel");
+const { getAuthenticatedUserId } = require("../config/authToken");
 
 function getQuiz(req, res) {
 
@@ -41,11 +42,7 @@ function submitQuiz(req, res) {
     const chapter_id = req.body.chapter_id;
     const answers = req.body.answers;
     const question_type = req.body.type;
-    const user_id = req.body.user_id;
-
-    console.log("Chapter ID:", chapter_id);
-    console.log("Question Type:", question_type);
-    console.log("Answers:", answers);
+    const user_id = getAuthenticatedUserId(req);
 
     if (!chapter_id) {
         return res.status(400).json({

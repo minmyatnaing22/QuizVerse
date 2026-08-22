@@ -1,11 +1,13 @@
 const userModel = require("../models/userModel");
+const { makeToken } = require("../config/authToken");
 
 function publicUser(user) {
 
     return {
         id: user.id,
         name: user.name,
-        email: user.email
+        email: user.email,
+        token: makeToken(user.id)
     };
 
 }
@@ -38,7 +40,7 @@ function register(req, res) {
 
         }
 
-        res.status(201).json(user);
+        res.status(201).json(publicUser(user));
 
     });
 

@@ -1,4 +1,5 @@
 const db = require("../config/database");
+const { EXAM_DATE } = require("../config/exam");
 
 function getHistory(user_id, callback) {
 
@@ -72,15 +73,29 @@ function getLeaderboard(callback) {
                     daysByUser[row.user_id].push(row.day);
                 });
 
-                const ranked = (rows || []).map((row, index) => ({
-                    rank: index + 1,
-                    user_id: row.id,
-                    name: row.name,
-                    xp: Number(row.xp) || 0,
-                    questions_answered: Number(row.questions_answered) || 0,
-                    accuracy: Number(row.accuracy) || 0,
-                    streak: streakFromDays(daysByUser[row.id] || [])
-                }));
+                let lastKey = null;
+                let lastRank = 0;
+
+                const ranked = (rows || []).map((row, index) => {
+                    const xp = Number(row.xp) || 0;
+                    const accuracy = Number(row.accuracy) || 0;
+                    const key = xp + "|" + accuracy;
+
+                    if (key !== lastKey) {
+                        lastRank = index + 1;
+                        lastKey = key;
+                    }
+
+                    return {
+                        rank: lastRank,
+                        user_id: row.id,
+                        name: row.name,
+                        xp,
+                        questions_answered: Number(row.questions_answered) || 0,
+                        accuracy,
+                        streak: streakFromDays(daysByUser[row.id] || [])
+                    };
+                });
 
                 callback(null, ranked);
 
@@ -136,10 +151,11 @@ function getExamDaysRemaining() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const exam = new Date(today);
-    exam.setDate(exam.getDate() + 200);
+    const exam = new Date(EXAM_DATE + "T00:00:00");
+    exam.setHours(0, 0, 0, 0);
 
-    return Math.round((exam.getTime() - today.getTime()) / 86400000);
+    const days = Math.ceil((exam.getTime() - today.getTime()) / 86400000);
+    return Math.max(0, days);
 
 }
 
@@ -185,7 +201,23 @@ function getSubjectProgress(user_id, callback) {
 
 }
 
+function getDashboardUser(user_id, callback) {
+
+    db.get(
+        "SELECT id, name, email FROM users WHERE id = ?",
+        [user_id],
+        callback
+    );
+
+}
+
 function getDashboard(user_id, callback) {
+
+    getDashboardUser(user_id, (userErr, account) => {
+
+        if (userErr) {
+            return callback(userErr);
+        }
 
     getLeaderboard((rankErr, ranks) => {
 
@@ -236,7 +268,8 @@ function getDashboard(user_id, callback) {
 
                     callback(null, {
                         user: {
-                            id: Number(user_id)
+                            id: account ? account.id : Number(user_id) || null,
+                            name: account ? account.name : null
                         },
                         sidebar: {
                             xp: mine ? mine.xp : correct * 10,
@@ -278,10 +311,13 @@ function getDashboard(user_id, callback) {
 
     });
 
+    });
+
 }
 
 module.exports = {
     getHistory,
     getLeaderboard,
-    getDashboard
+    getDashboard,
+    getExamDaysRemaining
 };

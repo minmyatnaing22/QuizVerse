@@ -1,7 +1,7 @@
 const user = getStoredUser();
 const list = document.getElementById("history-rows");
 
-if (!user || !user.id) {
+if (!user || !user.token) {
     if (list) {
         list.innerHTML = `
             <div class="table-row">
@@ -12,8 +12,13 @@ if (!user || !user.id) {
         `;
     }
 } else {
-    fetch(API + "/history?user_id=" + encodeURIComponent(user.id))
+    fetch(API + "/history", {
+        headers: authHeaders()
+    })
         .then((response) => {
+            if (response.status === 401) {
+                throw new Error("Log in to see practice history");
+            }
             if (!response.ok) {
                 throw new Error("Failed to load history");
             }

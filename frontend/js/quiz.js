@@ -3,10 +3,6 @@ const params = new URLSearchParams(window.location.search);
 const chapterId = params.get("chapter_id");
 const questionType = params.get("type");
 
-console.log("Chapter ID:", chapterId);
-console.log("Question Type:", questionType);
-
-
 const pageTitle = document.getElementById("page-title");
 const pageDescription = document.getElementById("page-description");
 
@@ -20,20 +16,49 @@ const questionsContainer =
 const quizForm =
     document.getElementById("quiz-form");
 
+const submitBtn = quizForm
+    ? quizForm.querySelector(".submit-btn")
+    : null;
+
 const validTypes = ["MCQ", "TRUE_FALSE", "BLANK"];
 
 let loadedQuestions = [];
+let submitting = false;
+
+function quizEscape(value) {
+    if (typeof escapeHtml === "function") {
+        return escapeHtml(value);
+    }
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
+
+function setSubmitEnabled(enabled, label) {
+    if (!submitBtn) {
+        return;
+    }
+    submitBtn.hidden = !enabled;
+    submitBtn.disabled = !enabled;
+    if (label) {
+        submitBtn.textContent = label;
+    }
+}
 
 
 if (!chapterId || !questionType) {
 
     questionsContainer.innerHTML =
         "<p>Invalid quiz URL.</p>";
+    setSubmitEnabled(false);
 
 } else if (!validTypes.includes(questionType)) {
 
     questionsContainer.innerHTML =
         "<p>Invalid question type.</p>";
+    setSubmitEnabled(false);
 
 } else {
 
@@ -45,7 +70,7 @@ if (!chapterId || !questionType) {
 function loadQuiz() {
 
     fetch(
-        `http://localhost:3000/quiz?chapter_id=${chapterId}&type=${questionType}`
+        `http://localhost:3000/quiz?chapter_id=${encodeURIComponent(chapterId)}&type=${encodeURIComponent(questionType)}`
     )
 
         .then(response => {
@@ -60,8 +85,6 @@ function loadQuiz() {
 
         .then(questions => {
 
-            console.log("Quiz data:", questions);
-
             loadedQuestions = questions;
 
             setupPage(questions);
@@ -70,12 +93,11 @@ function loadQuiz() {
 
         })
 
-        .catch(error => {
-
-            console.error("Quiz error:", error);
+        .catch(() => {
 
             questionsContainer.innerHTML =
                 "<p>Unable to load questions.</p>";
+            setSubmitEnabled(false);
 
         });
 
@@ -164,10 +186,11 @@ function displayQuestions(questions) {
 
         questionsContainer.innerHTML =
             "<p>No questions available for this quiz.</p>";
-
+        setSubmitEnabled(false);
         return;
     }
 
+    setSubmitEnabled(true, "Submit Answers");
 
     questions.forEach((question, index) => {
 
@@ -207,12 +230,12 @@ function createChoiceQuestion(question, index) {
                     <input
                         type="radio"
                         name="q${question.id}"
-                        value="${option.label}"
+                        value="${quizEscape(option.label)}"
                     >
 
                     <span>
-                        ${option.label}.
-                        ${option.text}
+                        ${quizEscape(option.label)}.
+                        ${quizEscape(option.text)}
                     </span>
                 </label>
             `;
@@ -223,7 +246,7 @@ function createChoiceQuestion(question, index) {
     return `
         <div class="quiz-question">
             <span>${index + 1}.</span>
-            ${question.question_text}
+            ${quizEscape(question.question_text)}
         </div>
 
         <div class="option-list">
@@ -239,7 +262,7 @@ function createBlank(question, index) {
     return `
         <div class="quiz-question">
             <span>${index + 1}.</span>
-            ${question.question_text}
+            ${quizEscape(question.question_text)}
         </div>
 
         <label class="answer-field">
@@ -264,6 +287,10 @@ if (quizForm) {
 
         event.preventDefault();
 
+        if (submitting) {
+            return;
+        }
+
         if (!chapterId || !questionType || loadedQuestions.length === 0) {
             return;
         }
@@ -287,22 +314,20 @@ if (quizForm) {
             answers
         };
 
-        try {
-            const storedUser = JSON.parse(localStorage.getItem("quizVerseUser") || "null");
-            if (storedUser && storedUser.id) {
-                body.user_id = storedUser.id;
-            }
-        } catch (err) {
-            console.error("Could not read saved user:", err);
-        }
+        const headers = Object.assign(
+            { "Content-Type": "application/json" },
+            typeof authHeaders === "function" ? authHeaders() : {}
+        );
 
-        console.log("Submit body:", body);
+        submitting = true;
+        setSubmitEnabled(true, "Submitting...");
+        if (submitBtn) {
+            submitBtn.disabled = true;
+        }
 
         fetch("http://localhost:3000/quiz/submit", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers,
             body: JSON.stringify(body)
         })
 
@@ -317,8 +342,6 @@ if (quizForm) {
             })
 
             .then(result => {
-
-                console.log("Submit result:", result);
 
                 const first = loadedQuestions[0];
 
@@ -335,9 +358,10 @@ if (quizForm) {
 
             })
 
-            .catch(error => {
+            .catch(() => {
 
-                console.error("Submit error:", error);
+                submitting = false;
+                setSubmitEnabled(true, "Submit Answers");
 
                 quizDescription.textContent =
                     "Unable to submit quiz.";

@@ -1,3 +1,12 @@
+const TYPE_ORDER = ["MCQ", "TRUE_FALSE", "BLANK"];
+
+const TYPE_GRIDS = {
+    MCQ: "mcq-chapters",
+    TRUE_FALSE: "true-chapters",
+    BLANK: "blank-chapters"
+};
+
+
 function getPageSubjectName() {
 
     const file = window.location.pathname.split("/").pop() || "";
@@ -39,7 +48,7 @@ function resolveSubjectId() {
 }
 
 
-function getSupportedTypes(chapters) {
+function getAvailableTypes(chapters) {
 
     const types = [];
 
@@ -47,7 +56,7 @@ function getSupportedTypes(chapters) {
 
         (chapter.question_types || []).forEach(type => {
 
-            if (!types.includes(type)) {
+            if (type && !types.includes(type)) {
                 types.push(type);
             }
 
@@ -55,68 +64,174 @@ function getSupportedTypes(chapters) {
 
     });
 
-    return types.length > 0 ? types : ["MCQ"];
+    return TYPE_ORDER.filter(type => types.includes(type));
 
 }
 
 
+function typeFromControlId(id) {
+
+    const value = String(id || "").toLowerCase();
+
+    if (value.includes("mcq")) {
+        return "MCQ";
+    }
+
+    if (value.includes("blank")) {
+        return "BLANK";
+    }
+
+    if (value.includes("true")) {
+        return "TRUE_FALSE";
+    }
+
+    return null;
+
+}
+
+
+function panelForType(type) {
+
+    const grid = document.getElementById(TYPE_GRIDS[type]);
+
+    return grid ? grid.closest(".category-panel") : null;
+
+}
+
+
+function setTypeVisible(type, visible) {
+
+    const panel = panelForType(type);
+
+    if (panel) {
+        panel.hidden = !visible;
+    }
+
+    document.querySelectorAll(".tab-bar .tab-btn").forEach(label => {
+
+        if (typeFromControlId(label.getAttribute("for")) !== type) {
+            return;
+        }
+
+        label.hidden = !visible;
+        label.style.display = visible ? "" : "none";
+
+        const radio = document.getElementById(label.getAttribute("for"));
+
+        if (radio) {
+            radio.disabled = !visible;
+        }
+
+    });
+
+}
+
+
+function activateType(type) {
+
+    document.querySelectorAll(".tab-bar .tab-btn").forEach(label => {
+
+        if (typeFromControlId(label.getAttribute("for")) !== type) {
+            return;
+        }
+
+        const radio = document.getElementById(label.getAttribute("for"));
+
+        if (radio) {
+            radio.checked = true;
+            radio.disabled = false;
+        }
+
+    });
+
+}
+
+
+function syncQuestionTypeTabs(availableTypes) {
+
+    TYPE_ORDER.forEach(type => {
+        setTypeVisible(type, availableTypes.includes(type));
+    });
+
+    if (availableTypes.length > 0) {
+        activateType(availableTypes[0]);
+    }
+
+}
+
+
+function chapterContainers() {
+    return {
+        MCQ: document.getElementById("mcq-chapters"),
+        TRUE_FALSE: document.getElementById("true-chapters"),
+        BLANK: document.getElementById("blank-chapters")
+    };
+}
+
+function setGridMessage(container, text) {
+    if (container) {
+        container.innerHTML = "<p>" + text + "</p>";
+    }
+}
+
+Object.values(chapterContainers()).forEach((container) => {
+    setGridMessage(container, "Loading chapters...");
+});
+
 resolveSubjectId()
     .then(subjectId => {
 
-        console.log("Subject ID:", subjectId);
-
         return fetch(
-            `http://localhost:3000/chapters?subject_id=${subjectId}`
-        ).then(response => response.json());
+            "http://localhost:3000/chapters?subject_id=" + encodeURIComponent(subjectId)
+        ).then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to load chapters");
+            }
+            return response.json();
+        });
 
     })
     .then(chapters => {
 
-        console.log("Chapters from backend:");
-        console.log(chapters);
+        const availableTypes = getAvailableTypes(chapters);
+        const containers = chapterContainers();
 
-        const supportedTypes = getSupportedTypes(chapters);
+        Object.values(containers).forEach((container) => {
+            if (container) {
+                container.innerHTML = "";
+            }
+        });
 
-        console.log("Supported types:", supportedTypes);
+        if (availableTypes.length === 0) {
+            TYPE_ORDER.forEach((type) => {
+                document.querySelectorAll(".tab-bar .tab-btn").forEach((label) => {
+                    if (typeFromControlId(label.getAttribute("for")) !== type) {
+                        return;
+                    }
+                    label.hidden = true;
+                    label.style.display = "none";
+                });
+            });
+            const checked = document.querySelector('.category-tabs input[type="radio"]:checked');
+            const type = typeFromControlId(checked && checked.id) || "TRUE_FALSE";
+            setGridMessage(
+                containers[type] || containers.TRUE_FALSE || containers.MCQ,
+                "No questions available for this subject yet."
+            );
+            return;
+        }
 
-        const mcqContainer =
-            document.getElementById("mcq-chapters");
-
-        const trueContainer =
-            document.getElementById("true-chapters");
-
-        const blankContainer =
-            document.getElementById("blank-chapters");
-
+        syncQuestionTypeTabs(availableTypes);
 
         chapters.forEach(chapter => {
 
-            console.log(
-                `Chapter ${chapter.chapter_number}:`,
-                chapter.question_types
-            );
+            (chapter.question_types || []).forEach(questionType => {
 
-            const types = chapter.question_types.length > 0
-                ? chapter.question_types
-                : supportedTypes;
+                const container = containers[questionType];
 
-            types.forEach(questionType => {
-
-                if (questionType === "MCQ" && mcqContainer) {
-                    mcqContainer.appendChild(
-                        createChapterCard(chapter, "MCQ")
-                    );
-                }
-
-                if (questionType === "TRUE_FALSE" && trueContainer) {
-                    trueContainer.appendChild(
-                        createChapterCard(chapter, "TRUE_FALSE")
-                    );
-                }
-
-                if (questionType === "BLANK" && blankContainer) {
-                    blankContainer.appendChild(
-                        createChapterCard(chapter, "BLANK")
+                if (container) {
+                    container.appendChild(
+                        createChapterCard(chapter, questionType)
                     );
                 }
 
@@ -124,13 +239,20 @@ resolveSubjectId()
 
         });
 
-    })
-    .catch(error => {
+        availableTypes.forEach((type) => {
+            const container = containers[type];
+            if (container && !container.children.length) {
+                setGridMessage(container, "No chapters for this question type yet.");
+            }
+        });
 
-        console.error(
-            "Error fetching chapters:",
-            error
-        );
+    })
+    .catch(() => {
+
+        const containers = chapterContainers();
+        Object.values(containers).forEach((container) => {
+            setGridMessage(container, "Unable to load chapters.");
+        });
 
     });
 
@@ -157,10 +279,14 @@ function createChapterCard(chapter, questionType) {
     }
 
 
+    const safeName = typeof escapeHtml === "function"
+        ? escapeHtml(chapter.chapter_name)
+        : chapter.chapter_name;
+
     card.innerHTML = `
         <h3>
             Chapter ${chapter.chapter_number}:
-            ${chapter.chapter_name}
+            ${safeName}
         </h3>
 
         <p>
@@ -170,7 +296,7 @@ function createChapterCard(chapter, questionType) {
 
         <a
             class="start-btn"
-            href="../quiz.html?chapter_id=${chapter.id}&type=${questionType}"
+            href="../quiz.html?chapter_id=${encodeURIComponent(chapter.id)}&type=${encodeURIComponent(questionType)}"
         >
             ${buttonText}
         </a>

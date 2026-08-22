@@ -1,13 +1,3 @@
-const user = getStoredUser();
-
-function examDaysFromToday() {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const exam = new Date(today);
-    exam.setDate(exam.getDate() + 200);
-    return Math.round((exam.getTime() - today.getTime()) / 86400000);
-}
-
 function setText(id, value) {
     const el = document.getElementById(id);
     if (el) {
@@ -15,27 +5,24 @@ function setText(id, value) {
     }
 }
 
-function renderGuestDashboard() {
-    const days = examDaysFromToday();
-    setText("countdown-num", String(days));
-    setText("stat-exam", days + " days");
-    setText("heading-sub", days + " days to go — log in to track your real progress.");
-    setText("stat-questions", "0");
-    setText("stat-accuracy", "0%");
-    setText("sidebar-rank", "🏆 —");
-    renderRecent([]);
-    bindContinue(null);
-}
-
 function renderDashboard(data) {
     const sidebar = data.sidebar || {};
     const summary = data.summary || {};
-    const days = summary.exam_days != null ? summary.exam_days : examDaysFromToday();
+    const account = data.user || {};
+    const stored = getStoredUser() || {};
+    const name = account.name || stored.name || "";
+
+    const days = summary.exam_days != null ? summary.exam_days : null;
     const xp = Number(sidebar.xp) || 0;
     const accuracy = Number(sidebar.accuracy) || 0;
     const questions = Number(sidebar.questions_answered) || 0;
     const streak = Number(sidebar.streak) || 0;
     const rank = sidebar.rank;
+
+    if (name) {
+        setText("welcome-title", "Welcome back, " + name);
+        applySidebarUser({ name: name });
+    }
 
     setText("xp-label-left", "XP");
     setText("xp-label-right", String(xp));
@@ -44,11 +31,18 @@ function renderDashboard(data) {
     setText("sidebar-streak", "🔥 " + streak);
     setText("sidebar-accuracy", "🎯 " + accuracy + "%");
     setText("sidebar-questions", String(questions));
-    setText("countdown-num", String(days));
-    setText("stat-exam", days + " days");
+
+    if (days != null) {
+        setText("countdown-num", String(days));
+        setText("stat-exam", days + " days");
+        setText(
+            "heading-sub",
+            days + " days to go — keep your streak alive and close the gap on your weakest subject."
+        );
+    }
+
     setText("stat-questions", String(summary.total_questions_done || 0));
     setText("stat-accuracy", (summary.overall_accuracy || 0) + "%");
-    setText("heading-sub", days + " days to go — keep your streak alive and close the gap on your weakest subject.");
 
     const fill = document.getElementById("xp-fill");
     if (fill) {
@@ -57,12 +51,14 @@ function renderDashboard(data) {
 
     const ring = document.getElementById("avatar-ring-progress");
     if (ring) {
-        ring.setAttribute("stroke-dashoffset", String(251.2 * (1 - Math.min(accuracy, 100) / 100)));
+        ring.setAttribute(
+            "stroke-dashoffset",
+            String(251.2 * (1 - Math.min(accuracy, 100) / 100))
+        );
     }
 
     renderSubjectProgress(data.subject_progress || []);
     renderRecent(data.recent_practice || []);
-    bindContinue(sidebar.continue_practice || null);
 }
 
 function renderSubjectProgress(rows) {
@@ -109,57 +105,52 @@ function renderRecent(rows) {
         const chapter = row.chapter_number != null
             ? "Ch " + row.chapter_number + " · " + (row.chapter_name || "")
             : (row.chapter_name || "");
+        const href = (row.chapter_id && row.question_type)
+            ? ("quiz.html?chapter_id=" + encodeURIComponent(row.chapter_id) +
+                "&type=" + encodeURIComponent(row.question_type))
+            : "history.html";
+
         return (
-            '<div class="recent-item">' +
+            '<a class="recent-item" href="' + href + '">' +
                 '<div class="recent-name">' + escapeHtml(row.subject_name || "") + "</div>" +
                 '<div class="recent-meta">' +
                     escapeHtml(chapter) + " · " + escapeHtml(typeLabel(row.question_type)) +
                     " · " + (Number(row.score) || 0) + "/" + (Number(row.total_questions) || 0) +
                     " (" + percent + "%)" +
                 "</div>" +
-            "</div>"
+            "</a>"
         );
     }).join("");
 }
 
-function bindContinue(target) {
-    const button = document.getElementById("continue-btn");
-    if (!button) {
-        return;
-    }
-
-    if (!target || !target.chapter_id || !target.type) {
-        button.textContent = "▶ Start Your First Quiz";
-        button.onclick = () => {
-            document.querySelector(".subject-grid")?.scrollIntoView({
-                behavior: "smooth"
-            });
-        };
-        return;
-    }
-
-    button.textContent = "▶ Continue Practice";
-    button.onclick = () => {
-        window.location.href =
-            "quiz.html?chapter_id=" + encodeURIComponent(target.chapter_id) +
-            "&type=" + encodeURIComponent(target.type);
-    };
+function loadHomeDashboard() {
+    fetch(API + "/dashboard", {
+        headers: authHeaders()
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to load dashboard");
+            }
+            return response.json();
+        })
+        .then(renderDashboard)
+        .catch(() => {
+            const list = document.getElementById("recent-practice-list");
+            if (list && !list.children.length) {
+                list.innerHTML = '<div class="recent-empty">Unable to load dashboard</div>';
+            }
+        });
 }
 
-const user = getStoredUser();
-const dashboardUrl = user && user.id
-    ? API + "/dashboard?user_id=" + encodeURIComponent(user.id)
-    : API + "/dashboard";
-
-fetch(dashboardUrl)
-    .then((response) => {
-        if (!response.ok) {
-            throw new Error("Failed to load dashboard");
-        }
-        return response.json();
-    })
-    .then(renderDashboard)
-    .catch((err) => {
-        console.error(err);
-        renderGuestDashboard();
+if (window.quizVerseDashboard) {
+    renderDashboard(window.quizVerseDashboard);
+} else {
+    document.addEventListener("quizverse-dashboard", (event) => {
+        renderDashboard(event.detail);
     });
+    loadHomeDashboard();
+}
+
+if (window.location.hash === "#subject-grid") {
+    document.getElementById("subject-grid")?.scrollIntoView();
+}

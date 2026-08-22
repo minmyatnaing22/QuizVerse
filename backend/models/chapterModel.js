@@ -14,6 +14,7 @@ function getChaptersBySubject(subject_id, callback) {
 
         LEFT JOIN questions q
             ON c.id = q.chapter_id
+            AND q.is_active = 1
 
         WHERE c.subject_id = ?
 
