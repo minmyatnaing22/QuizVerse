@@ -69,9 +69,34 @@ function getExamDays(req, res) {
 
 }
 
+function getAnalytics(req, res) {
+
+    const user_id = getAuthenticatedUserId(req);
+
+    if (!user_id) {
+        return res.status(401).json({
+            error: "Login is required"
+        });
+    }
+
+    statsModel.getAnalytics(user_id, (err, data) => {
+
+        if (err) {
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+
+        res.json(data);
+
+    });
+
+}
+
 module.exports = {
     getHistory,
     getLeaderboard,
     getDashboard,
+    getAnalytics,
     getExamDays
 };

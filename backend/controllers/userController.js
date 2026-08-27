@@ -77,7 +77,39 @@ function login(req, res) {
 
 }
 
+function restoreSession(req, res) {
+
+    const email = String(req.body.email || "").trim().toLowerCase();
+    const id = Number(req.body.id);
+
+    if (!email || !Number.isInteger(id) || id < 1) {
+        return res.status(400).json({
+            error: "id and email are required"
+        });
+    }
+
+    userModel.findByEmail(email, (err, user) => {
+
+        if (err) {
+            return res.status(500).json({
+                error: err.message
+            });
+        }
+
+        if (!user || Number(user.id) !== id) {
+            return res.status(401).json({
+                error: "Login is required"
+            });
+        }
+
+        res.json(publicUser(user));
+
+    });
+
+}
+
 module.exports = {
     register,
-    login
+    login,
+    restoreSession
 };

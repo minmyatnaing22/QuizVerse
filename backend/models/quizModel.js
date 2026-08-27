@@ -175,17 +175,17 @@ function calculateScore(chapter_id, question_type, answers, callback) {
 
 
 
-function saveQuizAttempt(user_id, chapter_id, question_type, score, total_questions, percentage, callback) {
+function saveQuizAttempt(user_id, chapter_id, question_type, score, total_questions, percentage, mode, callback) {
 
     const sql = `
         INSERT INTO quiz_attempts
-        (user_id, chapter_id, question_type, score, total_questions, percentage)
-        VALUES (?, ?, ?, ?, ?, ?)
+        (user_id, chapter_id, question_type, score, total_questions, percentage, mode)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.run(
         sql,
-        [user_id, chapter_id, question_type, score, total_questions, percentage],
+        [user_id, chapter_id, question_type, score, total_questions, percentage, mode],
         callback
     );
 

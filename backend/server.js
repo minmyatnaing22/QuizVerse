@@ -1,10 +1,14 @@
+require("./config/loadEnv");
+
 const express = require("express");
 const cors = require("cors");
 
 const app = express();
 
 app.use(cors({
-    origin: true
+    origin: true,
+    methods: ["GET", "POST", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "X-QuizVerse-Token", "Authorization"]
 }));
 app.use(express.json());
 
@@ -48,6 +52,31 @@ app.use("/users", userRoutes);
 const statsRoutes = require("./routes/statsRoutes");
 
 app.use("/", statsRoutes);
+
+
+const bookmarkRoutes = require("./routes/bookmarkRoutes");
+
+app.use("/", bookmarkRoutes);
+
+
+const examRoutes = require("./routes/examRoutes");
+
+app.use("/exam", examRoutes);
+
+
+const dailyChallengeRoutes = require("./routes/dailyChallengeRoutes");
+
+app.use("/daily-challenge", dailyChallengeRoutes);
+
+
+const badgeRoutes = require("./routes/badgeRoutes");
+
+app.use("/", badgeRoutes);
+
+
+const chatbotRoutes = require("./routes/chatbotRoutes");
+
+app.use("/chatbot", chatbotRoutes);
 
 
 

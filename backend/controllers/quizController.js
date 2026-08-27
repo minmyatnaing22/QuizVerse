@@ -1,5 +1,6 @@
 const quizModel = require("../models/quizModel");
 const { getAuthenticatedUserId } = require("../config/authToken");
+const badgeService = require("../services/badgeService");
 
 function getQuiz(req, res) {
 
@@ -43,6 +44,9 @@ function submitQuiz(req, res) {
     const answers = req.body.answers;
     const question_type = req.body.type;
     const user_id = getAuthenticatedUserId(req);
+    const mode = String(req.body.mode || "PRACTICE").toUpperCase() === "EXAM"
+        ? "EXAM"
+        : "PRACTICE";
 
     if (!chapter_id) {
         return res.status(400).json({
@@ -76,6 +80,7 @@ function submitQuiz(req, res) {
             }
 
             if (!user_id) {
+                result.mode = mode;
                 return res.json(result);
             }
 
@@ -86,6 +91,7 @@ function submitQuiz(req, res) {
                 result.correct_answers,
                 result.total_questions,
                 result.percentage,
+                mode,
                 (err) => {
 
                     if (err) {
@@ -94,7 +100,8 @@ function submitQuiz(req, res) {
                         });
                     }
 
-                    res.json(result);
+                    result.mode = mode;
+                    badgeService.attachToResponse(user_id, result, res);
 
                 }
             );

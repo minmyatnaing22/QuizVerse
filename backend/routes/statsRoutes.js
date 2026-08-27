@@ -12,4 +12,6 @@ router.get("/dashboard", statsController.getDashboard);
 
 router.get("/exam-days", statsController.getExamDays);
 
+router.get("/analytics", statsController.getAnalytics);
+
 module.exports = router;

@@ -8,4 +8,6 @@ router.post("/register", userController.register);
 
 router.post("/login", userController.login);
 
+router.post("/session", userController.restoreSession);
+
 module.exports = router;
