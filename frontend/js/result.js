@@ -14,41 +14,63 @@ function renderResult(payload) {
     const result = payload.result || {};
     const reviews = result.reviews || [];
 
+    const isExam = String(payload.mode || result.mode || "").toUpperCase() === "EXAM";
+
     const chapterNumber = payload.chapter_number;
     const chapterName = payload.chapter_name || "";
     const subjectName = payload.subject_name || "QuizVerse";
 
     const title = chapterNumber != null && chapterName
         ? `Chapter ${chapterNumber}: ${chapterName}`
-        : "Quiz Result";
+        : (isExam ? "Exam Result" : "Quiz Result");
 
-    document.getElementById("page-title").textContent = title + " Result";
-    document.getElementById("page-description").textContent =
-        "Review your score and answers.";
-    document.title = "QuizVerse | " + title + " Result";
+    document.getElementById("page-title").textContent = title + (isExam ? " — Exam Mode" : " Result");
+    document.getElementById("page-description").textContent = isExam
+        ? "Exam Mode complete. Review your score and answers."
+        : "Review your score and answers.";
+    document.title = "QuizVerse | " + title + (isExam ? " Exam" : " Result");
 
     const studentMeta = document.getElementById("student-meta");
     if (studentMeta) {
-        studentMeta.textContent = subjectName + " Practice";
+        studentMeta.textContent = isExam
+            ? subjectName + " Exam"
+            : subjectName + " Practice";
     }
 
     const subjectNav = document.getElementById("subject-nav-label");
     const backLink = document.getElementById("back-to-subject");
     const continueBtn = document.getElementById("continue-btn");
-    const subjectHref = payload.subject_name
-        ? `subject/${payload.subject_name.toLowerCase()}.html`
-        : "index.html";
+    const subjectHref = isExam
+        ? "exam.html"
+        : (payload.subject_name
+            ? `subject/${payload.subject_name.toLowerCase()}.html`
+            : "index.html");
 
     if (subjectNav) {
-        subjectNav.textContent = subjectName;
+        subjectNav.textContent = isExam ? "Exam Mode" : subjectName;
     }
     if (backLink) {
-        backLink.href = subjectHref;
+        backLink.href = isExam && payload.subject_id
+            ? "exam.html?subject_id=" + encodeURIComponent(payload.subject_id)
+            : subjectHref;
     }
     if (continueBtn) {
+        continueBtn.textContent = isExam ? "Back to Exam Subjects" : "▶ Continue Practice";
         continueBtn.addEventListener("click", () => {
-            window.location.href = subjectHref;
+            window.location.href = isExam ? "exam.html" : subjectHref;
         });
+        if (isExam && payload.subject_id && payload.type) {
+            const retake = document.createElement("button");
+            retake.className = "continue-btn";
+            retake.style.marginTop = "8px";
+            retake.textContent = "Retake Exam";
+            retake.addEventListener("click", () => {
+                window.location.href = "exam-take.html?subject_id=" +
+                    encodeURIComponent(payload.subject_id) +
+                    "&type=" + encodeURIComponent(payload.type);
+            });
+            continueBtn.parentNode.insertBefore(retake, continueBtn.nextSibling);
+        }
     }
 
     const total = Number(result.total_questions) || 0;
@@ -109,6 +131,10 @@ function renderResult(payload) {
         list.appendChild(card);
 
     });
+
+    if (typeof showAchievementUnlocks === "function") {
+        showAchievementUnlocks(result.newly_unlocked || payload.newly_unlocked || []);
+    }
 
 }
 

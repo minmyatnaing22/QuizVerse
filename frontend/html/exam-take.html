@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuizVerse | Exam</title>
+  <link rel="stylesheet" href="../css/quiz_style/quiz_style.css" />
+  <link rel="stylesheet" href="../css/exam_style.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="sidebar-backdrop"></div>
+    <aside class="sidebar">
+      <div class="brand"><span class="dot"></span> QuizVerse <span style="opacity:.55;font-weight:500;font-size:13px;">· Grade 12</span></div>
+      <div class="profile-card">
+        <div class="avatar-ring"><div class="avatar-fallback">QV</div></div>
+        <div class="student-name">Guest</div>
+        <div class="student-meta" id="student-meta">Exam Mode</div>
+        <button class="continue-btn">▶ Continue Practice</button>
+      </div>
+      <nav class="nav-list">
+        <a class="nav-item" href="exam.html"><span class="subject-name">Back to Exam Subjects</span></a>
+        <a class="nav-item" href="index.html"><span class="subject-name">Home</span></a>
+      </nav>
+    </aside>
+    <main>
+      <div class="mobile-header">
+        <div class="mobile-brand"><span class="dot"></span> QuizVerse</div>
+        <button class="sidebar-toggle" aria-label="Open menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+      <div class="top-row">
+        <div class="heading-block">
+          <h1 id="page-title">Exam Mode</h1>
+          <p id="page-description">Loading exam...</p>
+        </div>
+      </div>
+      <div class="panel-intro mcq-panel" id="quiz-panel">
+        <h2 id="quiz-title">Exam</h2>
+        <p id="quiz-description">Answers stay hidden until you submit.</p>
+      </div>
+      <div class="exam-take-wrap">
+        <div class="exam-progress" id="exam-progress"></div>
+        <div id="exam-question"></div>
+        <div class="exam-nav">
+          <button type="button" id="exam-prev">Previous</button>
+          <button type="button" id="exam-next">Next</button>
+          <button type="button" class="submit-exam-btn" id="exam-submit">Submit Exam</button>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const backdrop = document.querySelector('.sidebar-backdrop');
+    function setSidebarOpen(isOpen) {
+      sidebar.classList.toggle('open', isOpen);
+      backdrop.classList.toggle('open', isOpen);
+      document.body.classList.toggle('sidebar-open', isOpen);
+    }
+    sidebarToggle?.addEventListener('click', () => setSidebarOpen(!sidebar.classList.contains('open')));
+    backdrop?.addEventListener('click', () => setSidebarOpen(false));
+  </script>
+  <script src="../js/session.js"></script>
+  <script src="../js/exam-take.js"></script>
+</body>
+</html>

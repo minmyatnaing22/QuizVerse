@@ -194,6 +194,9 @@ resolveSubjectId()
     .then(chapters => {
 
         const availableTypes = getAvailableTypes(chapters);
+        const visibleTypes = availableTypes.length > 0
+            ? availableTypes
+            : TYPE_ORDER;
         const containers = chapterContainers();
 
         Object.values(containers).forEach((container) => {
@@ -202,30 +205,15 @@ resolveSubjectId()
             }
         });
 
-        if (availableTypes.length === 0) {
-            TYPE_ORDER.forEach((type) => {
-                document.querySelectorAll(".tab-bar .tab-btn").forEach((label) => {
-                    if (typeFromControlId(label.getAttribute("for")) !== type) {
-                        return;
-                    }
-                    label.hidden = true;
-                    label.style.display = "none";
-                });
-            });
-            const checked = document.querySelector('.category-tabs input[type="radio"]:checked');
-            const type = typeFromControlId(checked && checked.id) || "TRUE_FALSE";
-            setGridMessage(
-                containers[type] || containers.TRUE_FALSE || containers.MCQ,
-                "No questions available for this subject yet."
-            );
-            return;
-        }
-
-        syncQuestionTypeTabs(availableTypes);
+        syncQuestionTypeTabs(visibleTypes);
 
         chapters.forEach(chapter => {
 
-            (chapter.question_types || []).forEach(questionType => {
+            const chapterTypes = (chapter.question_types || []).length > 0
+                ? chapter.question_types
+                : visibleTypes;
+
+            chapterTypes.forEach(questionType => {
 
                 const container = containers[questionType];
 
@@ -237,13 +225,6 @@ resolveSubjectId()
 
             });
 
-        });
-
-        availableTypes.forEach((type) => {
-            const container = containers[type];
-            if (container && !container.children.length) {
-                setGridMessage(container, "No chapters for this question type yet.");
-            }
         });
 
     })

@@ -2,6 +2,10 @@ const params = new URLSearchParams(window.location.search);
 
 const chapterId = params.get("chapter_id");
 const questionType = params.get("type");
+const quizMode = String(params.get("mode") || "practice").toLowerCase() === "exam"
+    ? "EXAM"
+    : "PRACTICE";
+const isExamMode = quizMode === "EXAM";
 
 const pageTitle = document.getElementById("page-title");
 const pageDescription = document.getElementById("page-description");
@@ -24,6 +28,8 @@ const validTypes = ["MCQ", "TRUE_FALSE", "BLANK"];
 
 let loadedQuestions = [];
 let submitting = false;
+const focusQuestionId = Number(params.get("focus")) || null;
+let bookmarkedIds = {};
 
 function quizEscape(value) {
     if (typeof escapeHtml === "function") {
@@ -91,6 +97,8 @@ function loadQuiz() {
 
             displayQuestions(questions);
 
+            loadBookmarkStates(questions);
+
         })
 
         .catch(() => {
@@ -138,15 +146,18 @@ function setupPage(questions) {
     }
 
     quizTitle.textContent =
-        `${typeName} Quiz`;
+        isExamMode ? `${typeName} Exam` : `${typeName} Quiz`;
 
-    pageDescription.textContent =
-        `Practice ${typeName} questions from this chapter.`;
+    pageDescription.textContent = isExamMode
+        ? `Exam Mode: answer all ${typeName} questions. Results appear only after you submit.`
+        : `Practice ${typeName} questions from this chapter.`;
 
     quizDescription.textContent =
         questions.length === 0
             ? "No questions available for this quiz."
-            : `Answer all ${questions.length} questions below.`;
+            : isExamMode
+                ? `Answer all ${questions.length} questions, then submit the exam. Correctness is hidden until then.`
+                : `Answer all ${questions.length} questions below.`;
 
     if (quizPanel) {
         quizPanel.classList.remove("mcq-panel", "tf-panel", "blank-panel");
@@ -164,7 +175,9 @@ function setupPage(questions) {
 
     const studentMeta = document.getElementById("student-meta");
     if (studentMeta) {
-        studentMeta.textContent = `${subjectName} Practice`;
+        studentMeta.textContent = isExamMode
+            ? `${subjectName} Exam`
+            : `${subjectName} Practice`;
     }
 
     const backLink = document.getElementById("back-to-chapters");
@@ -173,7 +186,7 @@ function setupPage(questions) {
             `subject/${first.subject_name.toLowerCase()}.html`;
     }
 
-    document.title = `QuizVerse | ${pageTitle.textContent}`;
+    document.title = `QuizVerse | ${pageTitle.textContent}${isExamMode ? " Exam" : ""}`;
 
 }
 
@@ -190,7 +203,7 @@ function displayQuestions(questions) {
         return;
     }
 
-    setSubmitEnabled(true, "Submit Answers");
+    setSubmitEnabled(true, isExamMode ? "Submit Exam" : "Submit Answers");
 
     questions.forEach((question, index) => {
 
@@ -198,6 +211,11 @@ function displayQuestions(questions) {
             document.createElement("article");
 
         card.classList.add("quiz-card");
+        card.setAttribute("data-question-id", String(question.id));
+
+        if (focusQuestionId && Number(question.id) === focusQuestionId) {
+            card.classList.add("focused");
+        }
 
 
         if (questionType === "MCQ" || questionType === "TRUE_FALSE") {
@@ -216,6 +234,15 @@ function displayQuestions(questions) {
         questionsContainer.appendChild(card);
 
     });
+
+    if (focusQuestionId) {
+        const focused = questionsContainer.querySelector(
+            '.quiz-card[data-question-id="' + focusQuestionId + '"]'
+        );
+        if (focused) {
+            focused.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
 
 }
 
@@ -244,9 +271,12 @@ function createChoiceQuestion(question, index) {
 
 
     return `
-        <div class="quiz-question">
-            <span>${index + 1}.</span>
-            ${quizEscape(question.question_text)}
+        <div class="quiz-question-head">
+            <div class="quiz-question">
+                <span>${index + 1}.</span>
+                ${quizEscape(question.question_text)}
+            </div>
+            ${bookmarkButton(question.id)}
         </div>
 
         <div class="option-list">
@@ -260,9 +290,12 @@ function createChoiceQuestion(question, index) {
 function createBlank(question, index) {
 
     return `
-        <div class="quiz-question">
-            <span>${index + 1}.</span>
-            ${quizEscape(question.question_text)}
+        <div class="quiz-question-head">
+            <div class="quiz-question">
+                <span>${index + 1}.</span>
+                ${quizEscape(question.question_text)}
+            </div>
+            ${bookmarkButton(question.id)}
         </div>
 
         <label class="answer-field">
@@ -280,6 +313,112 @@ function createBlank(question, index) {
 
 }
 
+function bookmarkButton(questionId) {
+    const saved = !!bookmarkedIds[questionId];
+    return `
+        <button
+            type="button"
+            class="bookmark-btn${saved ? " saved" : ""}"
+            data-question-id="${questionId}"
+            aria-pressed="${saved ? "true" : "false"}"
+        >
+            ${saved ? "Saved" : "Save"}
+        </button>
+    `;
+}
+
+function setBookmarkButtonState(button, saved) {
+    if (!button) {
+        return;
+    }
+    button.classList.toggle("saved", saved);
+    button.setAttribute("aria-pressed", saved ? "true" : "false");
+    button.textContent = saved ? "Saved" : "Save";
+}
+
+function loadBookmarkStates(questions) {
+    const user = typeof getStoredUser === "function" ? getStoredUser() : null;
+    if (!user || !user.token || !questions.length) {
+        return;
+    }
+
+    fetch("http://localhost:3000/bookmarks", {
+        headers: typeof authHeaders === "function" ? authHeaders() : {}
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("bookmarks failed");
+            }
+            return response.json();
+        })
+        .then((rows) => {
+            bookmarkedIds = {};
+            (rows || []).forEach((row) => {
+                bookmarkedIds[row.question_id] = true;
+            });
+            questionsContainer.querySelectorAll(".bookmark-btn").forEach((button) => {
+                const id = Number(button.getAttribute("data-question-id"));
+                setBookmarkButtonState(button, !!bookmarkedIds[id]);
+            });
+        })
+        .catch(() => {});
+}
+
+if (questionsContainer) {
+    questionsContainer.addEventListener("click", function (event) {
+        const button = event.target.closest(".bookmark-btn");
+        if (!button) {
+            return;
+        }
+
+        const user = typeof getStoredUser === "function" ? getStoredUser() : null;
+        if (!user || !user.token) {
+            button.textContent = "Log in to save";
+            return;
+        }
+
+        const questionId = Number(button.getAttribute("data-question-id"));
+        if (!questionId || button.disabled) {
+            return;
+        }
+
+        const currentlySaved = button.classList.contains("saved");
+        button.disabled = true;
+
+        const request = currentlySaved
+            ? fetch("http://localhost:3000/bookmarks/" + encodeURIComponent(questionId), {
+                method: "DELETE",
+                headers: authHeaders()
+            })
+            : fetch("http://localhost:3000/bookmarks", {
+                method: "POST",
+                headers: Object.assign(
+                    { "Content-Type": "application/json" },
+                    authHeaders()
+                ),
+                body: JSON.stringify({ question_id: questionId })
+            });
+
+        request
+            .then((response) => {
+                if (response.status === 401) {
+                    throw new Error("login");
+                }
+                if (!response.ok) {
+                    throw new Error("bookmark failed");
+                }
+                const saved = !currentlySaved;
+                bookmarkedIds[questionId] = saved;
+                setBookmarkButtonState(button, saved);
+            })
+            .catch(() => {
+                button.textContent = currentlySaved ? "Saved" : "Save";
+            })
+            .finally(() => {
+                button.disabled = false;
+            });
+    });
+}
 
 if (quizForm) {
 
@@ -311,6 +450,7 @@ if (quizForm) {
         const body = {
             chapter_id: Number(chapterId),
             type: questionType,
+            mode: quizMode,
             answers
         };
 
@@ -348,6 +488,7 @@ if (quizForm) {
                 sessionStorage.setItem("quizVerseResult", JSON.stringify({
                     chapter_id: Number(chapterId),
                     type: questionType,
+                    mode: quizMode,
                     chapter_number: first?.chapter_number,
                     chapter_name: first?.chapter_name,
                     subject_name: first?.subject_name,
@@ -361,7 +502,7 @@ if (quizForm) {
             .catch(() => {
 
                 submitting = false;
-                setSubmitEnabled(true, "Submit Answers");
+                setSubmitEnabled(true, isExamMode ? "Submit Exam" : "Submit Answers");
 
                 quizDescription.textContent =
                     "Unable to submit quiz.";

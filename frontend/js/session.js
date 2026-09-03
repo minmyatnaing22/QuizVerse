@@ -1,4 +1,6 @@
-const API = "http://localhost:3000";
+const API = window.location.protocol === "file:"
+    ? "http://localhost:3000"
+    : window.location.origin;
 
 function getStoredUser() {
     try {
@@ -15,6 +17,51 @@ function authHeaders() {
         headers["X-QuizVerse-Token"] = user.token;
     }
     return headers;
+}
+
+function restoreStoredToken() {
+    const user = getStoredUser();
+
+    if (!user || !user.id) {
+        return Promise.resolve(user);
+    }
+
+    if (user.token) {
+        return Promise.resolve(user);
+    }
+
+    if (!user.email) {
+        return Promise.resolve(user);
+    }
+
+    return fetch(API + "/users/session", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: user.id,
+            email: user.email
+        })
+    })
+        .then((response) => {
+            if (!response.ok) {
+                return null;
+            }
+            return response.json();
+        })
+        .then((data) => {
+            if (data && data.token) {
+                localStorage.setItem("quizVerseUser", JSON.stringify({
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                    token: data.token
+                }));
+            }
+            return getStoredUser();
+        })
+        .catch(() => user);
 }
 
 function initials(name) {
@@ -36,10 +83,77 @@ function htmlHref(file) {
     return file;
 }
 
-function quizHref(chapterId, type) {
-    return htmlHref("quiz.html") +
+function applyTheme(theme) {
+    const mode = theme === "dark" ? "dark" : "light";
+    let style = document.getElementById("qv-theme-vars");
+    if (!style) {
+        style = document.createElement("style");
+        style.id = "qv-theme-vars";
+        document.head.appendChild(style);
+    }
+    style.textContent = mode === "dark"
+        ? ":root{--bg:#0f172a;--white:#111c34;--ink:#f8fafc;--ink-soft:#cbd5e1;--line:#27344f;--blue-100:#1e293b;}body{background:var(--bg);color:var(--ink);} .leaderboard-card,.subject-card,.qstat,.input-wrap,.field-card,.settings-card,.discussion-card,.message-composer,.chat-window{background:var(--white)!important;color:var(--ink)!important;border-color:var(--line)!important;} input,textarea,select{color:var(--ink)!important;} .recent-item,.table-row,.stat-chip,.mini-card{border-color:var(--line)!important;}"
+        : ":root{--bg:#F5F7FC;--white:#FFFFFF;--ink:#16294D;--ink-soft:#5C6B8A;--line:#E4E9F5;--blue-100:#E7EDFF;}";
+    document.documentElement.setAttribute("data-theme", mode);
+    document.body.classList.toggle("theme-dark", mode === "dark");
+    try {
+        localStorage.setItem("quizVerseTheme", mode);
+    } catch (err) {}
+}
+
+function restoreThemePreference() {
+    try {
+        const stored = localStorage.getItem("quizVerseTheme");
+        if (stored === "dark" || stored === "light") {
+            applyTheme(stored);
+        }
+    } catch (err) {}
+}
+
+function bindSettingsLink() {
+    document.querySelectorAll(".nav-item").forEach((link) => {
+        const label = link.querySelector("span");
+        if (!label || label.textContent.trim() !== "Settings") {
+            return;
+        }
+        link.setAttribute("href", htmlHref("settings.html"));
+        link.addEventListener("click", (event) => {
+            event.preventDefault();
+            window.location.href = htmlHref("settings.html");
+        });
+    });
+}
+
+function bindDiscussionLink() {
+    const navLists = document.querySelectorAll(".nav-list");
+    navLists.forEach((nav) => {
+        if (!nav || nav.querySelector('[data-qv-discussion-link="true"]')) {
+            return;
+        }
+        const link = document.createElement("a");
+        link.className = "nav-item";
+        link.href = htmlHref("group-discussion.html");
+        link.setAttribute("data-qv-discussion-link", "true");
+        if (currentPageName() === "group-discussion.html") {
+            link.classList.add("active");
+        }
+        link.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg><span>Group Discussion</span>';
+        const settingsLink = Array.from(nav.querySelectorAll(".nav-item")).find((item) => {
+            const label = item.querySelector("span");
+            return label && label.textContent.trim() === "Settings";
+        });
+        nav.insertBefore(link, settingsLink || nav.querySelector(".nav-item.logout") || null);
+    });
+}
+
+function quizHref(chapterId, type, mode) {
+    let url = htmlHref("quiz.html") +
         "?chapter_id=" + encodeURIComponent(chapterId) +
         "&type=" + encodeURIComponent(type);
+    if (String(mode || "").toUpperCase() === "EXAM") {
+        url += "&mode=exam";
+    }
+    return url;
 }
 
 function applySidebarUser(user) {
@@ -114,7 +228,7 @@ function applyExamDays(days) {
 
 function goToContinueTarget(target) {
     if (target && target.chapter_id && target.type) {
-        window.location.href = quizHref(target.chapter_id, target.type);
+        window.location.href = quizHref(target.chapter_id, target.type, target.mode);
         return;
     }
     window.location.href = htmlHref("index.html") + "#subject-grid";
@@ -221,6 +335,7 @@ function loadSharedUserData() {
         .catch(() => {});
 
     if (!user || !user.token) {
+        applyTheme("light");
         bindContinueButton(null);
         fetch(API + "/dashboard")
             .then((response) => response.json())
@@ -261,7 +376,180 @@ function loadSharedUserData() {
         .catch(() => {
             bindContinueButton(null);
         });
+
+    fetch(API + "/users/me", {
+        headers: authHeaders()
+    })
+        .then((response) => response.ok ? response.json() : null)
+        .then((data) => {
+            if (!data || !data.preferences) {
+                return;
+            }
+            applyTheme(data.preferences.dark_mode ? "dark" : "light");
+            window.quizVerseCurrentUser = data;
+            document.dispatchEvent(new CustomEvent("quizverse-user-loaded", { detail: data }));
+        })
+        .catch(() => {});
 }
 
 bindLogout();
-loadSharedUserData();
+restoreThemePreference();
+bindSettingsLink();
+bindDiscussionLink();
+restoreStoredToken().then(() => {
+    loadSharedUserData();
+    window.quizVerseSessionReady = true;
+    document.dispatchEvent(new Event("quizverse-session-ready"));
+});
+
+const CHAT_SESSION_KEY = "quizVerseChatSession";
+const CHAT_PING_KEY = "quizVerseChatPing";
+const CHAT_SHARE_KEY = "quizVerseChatShare";
+
+function isChatBrowserReload() {
+    try {
+        const nav = performance.getEntriesByType("navigation")[0];
+        if (nav && nav.type) {
+            return nav.type === "reload";
+        }
+    } catch (err) {}
+    try {
+        return performance.navigation && performance.navigation.type === 1;
+    } catch (err) {}
+    return false;
+}
+
+function parseChatSession(raw) {
+    if (!raw) {
+        return null;
+    }
+    try {
+        const data = JSON.parse(raw);
+        return data && typeof data === "object" ? data : null;
+    } catch (err) {
+        return null;
+    }
+}
+
+function writeChatSession(data) {
+    const json = JSON.stringify(data || { conversation: [], context: {} });
+    sessionStorage.setItem(CHAT_SESSION_KEY, json);
+    try {
+        localStorage.setItem(CHAT_SESSION_KEY, json);
+    } catch (err) {}
+}
+
+function clearChatSession() {
+    sessionStorage.removeItem(CHAT_SESSION_KEY);
+    try {
+        localStorage.removeItem(CHAT_SESSION_KEY);
+    } catch (err) {}
+}
+
+function loadSharedChatSession(callback) {
+    if (isChatBrowserReload()) {
+        clearChatSession();
+        callback(null);
+        return;
+    }
+
+    const existing = parseChatSession(sessionStorage.getItem(CHAT_SESSION_KEY));
+    if (existing) {
+        callback(existing);
+        return;
+    }
+
+    let answered = false;
+    function onShare(event) {
+        if (event.key !== CHAT_SHARE_KEY || !event.newValue) {
+            return;
+        }
+        answered = true;
+        sessionStorage.setItem(CHAT_SESSION_KEY, event.newValue);
+        try {
+            localStorage.removeItem(CHAT_SHARE_KEY);
+        } catch (err) {}
+        callback(parseChatSession(event.newValue));
+    }
+
+    window.addEventListener("storage", onShare);
+    try {
+        localStorage.setItem(CHAT_PING_KEY, String(Date.now()));
+    } catch (err) {
+        window.removeEventListener("storage", onShare);
+        callback(null);
+        return;
+    }
+
+    setTimeout(() => {
+        window.removeEventListener("storage", onShare);
+        if (!answered) {
+            try {
+                localStorage.removeItem(CHAT_SESSION_KEY);
+            } catch (err) {}
+            callback(null);
+        }
+    }, 150);
+}
+
+window.addEventListener("storage", (event) => {
+    if (event.key === CHAT_PING_KEY && event.newValue) {
+        const raw = sessionStorage.getItem(CHAT_SESSION_KEY);
+        if (!raw) {
+            return;
+        }
+        try {
+            localStorage.setItem(CHAT_SHARE_KEY, raw);
+            localStorage.removeItem(CHAT_SHARE_KEY);
+        } catch (err) {}
+        return;
+    }
+
+    if (event.key !== CHAT_SESSION_KEY) {
+        return;
+    }
+
+    if (!event.newValue) {
+        sessionStorage.removeItem(CHAT_SESSION_KEY);
+        document.dispatchEvent(new CustomEvent("quizverse-chat-sync", { detail: null }));
+        return;
+    }
+
+    sessionStorage.setItem(CHAT_SESSION_KEY, event.newValue);
+    document.dispatchEvent(new CustomEvent("quizverse-chat-sync", {
+        detail: parseChatSession(event.newValue)
+    }));
+});
+
+function chatbotAssetHref(folder, file) {
+    const path = window.location.pathname.replace(/\\/g, "/");
+    if (path.includes("/subject/")) {
+        return "../../" + folder + "/" + file;
+    }
+    return "../" + folder + "/" + file;
+}
+
+function loadChatbotWidget() {
+    const page = currentPageName();
+    if (page === "chatbot.html" || page === "quizverse-auth.html") {
+        return;
+    }
+    if (document.getElementById("qv-chatbot-root")) {
+        return;
+    }
+    if (!document.querySelector('link[data-qv-chatbot-style]')) {
+        const style = document.createElement("link");
+        style.rel = "stylesheet";
+        style.href = chatbotAssetHref("css", "chatbot_style.css");
+        style.setAttribute("data-qv-chatbot-style", "true");
+        document.head.appendChild(style);
+    }
+    if (!document.querySelector('script[data-qv-chatbot-widget]')) {
+        const script = document.createElement("script");
+        script.src = chatbotAssetHref("js", "chatbot-widget.js");
+        script.setAttribute("data-qv-chatbot-widget", "true");
+        document.body.appendChild(script);
+    }
+}
+
+loadChatbotWidget();

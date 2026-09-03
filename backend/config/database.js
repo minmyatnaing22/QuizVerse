@@ -36,9 +36,11 @@ function ensureUserTables() {
             name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
             password_hash TEXT NOT NULL,
+            auth_provider TEXT NOT NULL DEFAULT 'local',
+            google_id TEXT UNIQUE,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         )
-    `);
+    `, ensureUserColumns);
 
     db.all(
         "SELECT name FROM sqlite_master WHERE type='table' AND name='quiz_attempts'",
@@ -78,6 +80,59 @@ function ensureUserTables() {
 
         }
     );
+
+}
+
+function ensureUserColumns() {
+
+    db.all("PRAGMA table_info(users)", (err, cols) => {
+
+        if (err) {
+            console.error(err.message);
+            return;
+        }
+
+        const names = new Set((cols || []).map((col) => col.name));
+
+        if (!names.has("auth_provider")) {
+            db.run(
+                "ALTER TABLE users ADD COLUMN auth_provider TEXT NOT NULL DEFAULT 'local'",
+                (alterErr) => {
+                    if (alterErr) {
+                        console.error(alterErr.message);
+                    } else {
+                        console.log("Added users.auth_provider column.");
+                    }
+                }
+            );
+        }
+
+        if (!names.has("google_id")) {
+            db.run(
+                "ALTER TABLE users ADD COLUMN google_id TEXT",
+                (alterErr) => {
+                    if (alterErr) {
+                        console.error(alterErr.message);
+                        return;
+                    }
+                    db.run(
+                        "CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id)",
+                        (indexErr) => {
+                            if (indexErr) {
+                                console.error(indexErr.message);
+                            } else {
+                                console.log("Added users.google_id column.");
+                            }
+                        }
+                    );
+                }
+            );
+            return;
+        }
+
+        db.run("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id)");
+
+    });
 
 }
 
@@ -208,6 +263,38 @@ function ensureBadgeTables() {
 
 }
 
+function ensureUserSettingsTable() {
+
+    db.run(`
+        CREATE TABLE IF NOT EXISTS user_settings (
+            user_id INTEGER PRIMARY KEY,
+            dark_mode INTEGER NOT NULL DEFAULT 0,
+            study_goal TEXT NOT NULL DEFAULT 'Balanced Practice',
+            daily_reminder INTEGER NOT NULL DEFAULT 1,
+            email_updates INTEGER NOT NULL DEFAULT 1,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    `);
+
+}
+
+function ensureDiscussionMessagesTable() {
+
+    db.run(`
+        CREATE TABLE IF NOT EXISTS discussion_messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            subject_id INTEGER,
+            message TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (subject_id) REFERENCES subjects(id)
+        )
+    `);
+
+}
+
 const db = new sqlite3.Database(dbPath, (err) => {
 
     if (err) {
@@ -219,6 +306,8 @@ const db = new sqlite3.Database(dbPath, (err) => {
         ensureExamAttemptsTable();
         ensureDailyChallengeTable();
         ensureBadgeTables();
+        ensureUserSettingsTable();
+        ensureDiscussionMessagesTable();
     }
 
 });

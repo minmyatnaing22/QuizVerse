@@ -70,7 +70,7 @@ function renderHistory(rows) {
                 <span>${escapeHtml(when)}</span>
                 <span>${escapeHtml(row.subject_name || "")}</span>
                 <span>${escapeHtml(chapter)}</span>
-                <span>${escapeHtml(typeLabel(row.question_type))}</span>
+                <span>${escapeHtml(typeLabel(row.question_type))}${String(row.mode || "").toUpperCase() === "EXAM" ? " · Exam" : String(row.mode || "").toUpperCase() === "DAILY" ? " · Daily" : ""}</span>
                 <span>${Number(row.score) || 0}/${Number(row.total_questions) || 0}</span>
                 <span>${percent}%</span>
             </div>

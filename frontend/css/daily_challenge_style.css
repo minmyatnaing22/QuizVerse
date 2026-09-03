@@ -1,0 +1,142 @@
+.daily-card {
+  background: var(--white, #fff);
+  border: 1px solid var(--line, #e4e9f5);
+  border-radius: 20px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(22, 41, 77, 0.07);
+}
+
+.daily-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0 18px;
+}
+
+.daily-meta span {
+  background: #e7edff;
+  color: #2b5fe2;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.daily-take-wrap {
+  margin-top: 8px;
+}
+
+.daily-progress {
+  font-weight: 700;
+  color: #16294d;
+  margin-bottom: 12px;
+}
+
+.daily-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.daily-nav button,
+.daily-start-btn,
+.daily-login-btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.daily-nav button {
+  background: #eff4ff;
+  color: #2b5fe2;
+}
+
+.daily-nav .submit-daily-btn,
+.daily-start-btn {
+  background: #2b5fe2;
+  color: #fff;
+}
+
+.daily-login-btn {
+  display: inline-block;
+  background: #2b5fe2;
+  color: #fff;
+  text-decoration: none;
+}
+
+.daily-result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.daily-result-grid div {
+  background: #f5f7fc;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.daily-result-grid strong {
+  display: block;
+  font-size: 20px;
+  color: #122a5c;
+}
+
+.daily-error {
+  color: #b42318;
+}
+
+.quiz-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 22px;
+  border: 1px solid var(--line, #e4e9f5);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.quiz-question {
+  display: flex;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #122a5c;
+}
+
+.option-list {
+  display: grid;
+  gap: 12px;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line, #e4e9f5);
+  border-radius: 16px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.option-label:hover {
+  border-color: #2b5fe2;
+}
+
+.answer-field {
+  display: grid;
+  gap: 8px;
+}
+
+.answer-field input {
+  width: 100%;
+  border: 1px solid var(--line, #e4e9f5);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 14px;
+}

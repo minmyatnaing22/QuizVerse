@@ -59,6 +59,7 @@ function renderDashboard(data) {
 
     renderSubjectProgress(data.subject_progress || []);
     renderRecent(data.recent_practice || []);
+    loadBookmarkSummary();
 }
 
 function renderSubjectProgress(rows) {
@@ -123,6 +124,38 @@ function renderRecent(rows) {
     }).join("");
 }
 
+function loadBookmarkSummary() {
+    const meta = document.getElementById("bookmark-home-meta");
+    if (!meta) {
+        return;
+    }
+
+    const user = getStoredUser();
+    if (!user || !user.token) {
+        meta.textContent = "Log in to save questions";
+        return;
+    }
+
+    fetch(API + "/bookmarks", {
+        headers: authHeaders()
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("bookmarks failed");
+            }
+            return response.json();
+        })
+        .then((rows) => {
+            const count = (rows || []).length;
+            meta.textContent = count === 0
+                ? "No saved questions yet"
+                : count + " saved question" + (count === 1 ? "" : "s");
+        })
+        .catch(() => {
+            meta.textContent = "Unable to load bookmarks";
+        });
+}
+
 function loadHomeDashboard() {
     fetch(API + "/dashboard", {
         headers: authHeaders()
@@ -142,13 +175,22 @@ function loadHomeDashboard() {
         });
 }
 
-if (window.quizVerseDashboard) {
-    renderDashboard(window.quizVerseDashboard);
-} else {
+function startHomeDashboard() {
+    if (window.quizVerseDashboard) {
+        renderDashboard(window.quizVerseDashboard);
+        return;
+    }
+
     document.addEventListener("quizverse-dashboard", (event) => {
         renderDashboard(event.detail);
     });
     loadHomeDashboard();
+}
+
+if (window.quizVerseSessionReady) {
+    startHomeDashboard();
+} else {
+    document.addEventListener("quizverse-session-ready", startHomeDashboard);
 }
 
 if (window.location.hash === "#subject-grid") {

@@ -1,0 +1,168 @@
+.exam-section {
+  margin-top: 4px;
+}
+
+.exam-section .section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.exam-section .section-head h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 22px;
+}
+
+.subject-card {
+  --accent: #2b5fe2;
+  --accent-soft: #e7edff;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid var(--line);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s ease, border-color .22s ease;
+}
+
+.subject-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lift);
+  border-color: transparent;
+}
+
+.subject-card::after {
+  content: "";
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  opacity: 0.6;
+  z-index: 0;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  z-index: 1;
+}
+
+.subj-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  box-shadow: 0 8px 18px -6px var(--accent);
+  color: #fff;
+  font-size: 24px;
+}
+
+.completion-pill {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  padding: 5px 10px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--blue-900);
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.card-sub {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  position: relative;
+  z-index: 1;
+  line-height: 1.5;
+}
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 18px;
+  position: relative;
+  z-index: 1;
+  gap: 12px;
+}
+
+.qcount {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.practice-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 11px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.practice-btn:hover {
+  filter: brightness(1.08);
+  transform: translateX(2px);
+}
+
+.exam-back {
+  margin-top: 18px;
+  border: 0;
+  background: var(--blue-100);
+  color: var(--blue-600);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.exam-muted,
+.exam-error {
+  color: var(--ink-soft);
+}
+
+.exam-error {
+  color: #b42318;
+}
+
+@media (max-width: 700px) {
+  .subject-grid {
+    grid-template-columns: 1fr;
+  }
+}

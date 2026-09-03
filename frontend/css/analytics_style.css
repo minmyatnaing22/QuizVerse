@@ -1,0 +1,145 @@
+.analytics-empty {
+  text-align: left;
+}
+
+.analytics-empty h3 {
+  color: var(--blue-900);
+  margin-bottom: 8px;
+}
+
+.analytics-empty p,
+.muted {
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0 0 20px;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: var(--shadow-soft);
+}
+
+.stat-card .lbl {
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.stat-card .val {
+  font-family: Poppins, Inter, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--blue-900);
+  margin-top: 6px;
+}
+
+.split-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.leaderboard-card + .leaderboard-card,
+.split-grid + .leaderboard-card,
+.stat-cards + .split-grid {
+  margin-top: 0;
+}
+
+.split-grid .leaderboard-card,
+#insights-card,
+#analytics-content > .leaderboard-card {
+  margin-bottom: 16px;
+}
+
+.insight-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.insight-list li {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 14px;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+
+.metric-row strong {
+  color: var(--blue-900);
+}
+
+.metric-row small {
+  display: block;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+
+.accuracy-pill {
+  font-weight: 800;
+  color: var(--blue-700);
+  white-space: nowrap;
+}
+
+.highlight-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.chart-svg {
+  width: 100%;
+  height: 220px;
+  display: block;
+  overflow: visible;
+}
+
+.chart-empty,
+.empty-note {
+  color: var(--ink-soft);
+  font-size: 14px;
+  padding: 8px 0;
+}
+
+.analytics-recent-row {
+  grid-template-columns: 1.1fr 1fr 1.4fr 0.7fr 0.6fr;
+}
+
+@media (max-width: 1040px) {
+  .stat-cards,
+  .split-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .stat-cards,
+  .split-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .analytics-recent-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
